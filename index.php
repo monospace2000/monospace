@@ -4,9 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>monospace</title>
+<meta name="description" content="monospace" />
+<meta property="og:title" content="monospace" />
+<meta property="og:description" content="Music, Art, and Interactive Multimedia since 1998. You are visitor number one." />
+<meta property="og:site_name" content="monospace.com" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.monospace.com/" />
+<meta property="og:image" content="https://www.monospace.com/assets/images/site_image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="https://www.monospace.com" />
+<meta name="twitter:creator" content="@monospace" />
+<meta name="twitter:title" content="monospace" />
+<meta name="twitter:description" content="Music, Art, and Interactive Multimedia since 1998. You are visitor number one." />
+<meta name="twitter:image" content="https://www.monospace.com/assets/images/site_image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <style>
 /* Base styles */
 html, body {
@@ -23,7 +38,7 @@ body::before {
     inset: 0;
     z-index: 0;
     background: url('/assets/images/logo_xl_transp.png') 10% 10vh no-repeat,
-                radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 33vw),
+                radial-gradient(circle at 35% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 33vw),
                 #000;
     background-size: 70%, 100%, 100%;
 }
@@ -211,7 +226,7 @@ body::before {
             <div class="panel-top"></div>
             <div class="panel-header">Sightings of the Strangely Familiar</div>
             <div class="panel-content">
-                A series of original digital sketches created with Procreate, captioned by Mindy.
+                A series of original digital sketches made with Procreate, captioned by Mindy.
             </div>
         </div>
     </div>
@@ -250,12 +265,23 @@ body::before {
     </div>
 </div>
 <div class="section">
+    <div class="panel-wrap" id="wayback" data-spotlight="wayback">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">2001 TIME CAPSULE</div>
+            <div class="panel-content">
+                This website has been around since 1998. It's changed many times since then, but it was always state of the art. Here is a snapshot of what it looked like in July of 2001, as found on the Wayback Machine.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
     <div class="panel-wrap" id="digits" data-spotlight="digits">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">DIGITAL SEX LIFE</div>
             <div class="panel-content">
-                An early interactive artwork from 1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten with the aid of AI.
+                An early interactive artwork from 1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten with a little aid of an LLM coding assistant.
             </div>
         </div>
     </div>
@@ -266,7 +292,7 @@ body::before {
             <div class="panel-top"></div>
             <div class="panel-header">monospace COLOR</div>
             <div class="panel-content">
-                I enjoy restore and colorize vintage black-and-white photographs, paying close attention to historical accuracy and visual detail.
+                I like to restore and colorize vintage black-and-white photographs by hand in Photoshop, paying close attention to historical accuracy and visual detail. Your "AI" can't do that.
             </div>
         </div>
     </div>
@@ -277,7 +303,7 @@ body::before {
             <div class="panel-top"></div>
             <div class="panel-header">monospace MUSIC</div>
             <div class="panel-content">
-                I play drums and guitar, and I write original music. Here you can explore my recordings, live videos, and songs.
+                I play drums and guitar, and I write original music. Here you can find some of my recordings, live videos, and songs. (SOON)
             </div>
         </div>
     </div>
@@ -304,7 +330,8 @@ const spotlight = document.getElementById('spotlight-item');
 const sectionsObject = {
     welcome: { isActive: false, spotlightImage: 'assets/images/spotlight/hand.png', panel: document.getElementById('welcome'), url: null },
     art: { isActive: false, spotlightImage: 'assets/images/spotlight/easel.png', panel: document.getElementById('art'), url: 'https://art.monospace.com' },
-    sightings: { isActive: false, spotlightImage: 'assets/images/spotlight/sightings.png', panel: document.getElementById('art'), url: 'https://sightings.monospace.com' },
+    wayback: { isActive: false, spotlightImage: 'assets/images/spotlight/cabinet.png', panel: document.getElementById('wayback'), url: 'wayback/july2001' },
+    sightings: { isActive: false, spotlightImage: 'assets/images/spotlight/sightings.png', panel: document.getElementById('sightings'), url: 'https://sightings.monospace.com' },
     food: { isActive: false, spotlightImage: 'assets/images/spotlight/tocque.png', panel: document.getElementById('food'), url: 'https://food.monospace.com' },
     interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/portfolio/wordpress/portfolio/publishers-clearing-house/monthly-facebook-mini-games/' },
     console: { isActive: false, spotlightImage: 'assets/images/spotlight/console.png', panel: document.getElementById('console'), url: 'console' },

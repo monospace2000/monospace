@@ -1,0 +1,118 @@
+<html>
+
+<head>
+
+<title>m o n o s p a c e</title>
+
+<script>
+// Copyright (c)1991-2000 monospace. All Rights Reserved.
+// Use of this code without written permission from the copyright owner is expressly prohibited.
+
+explorer = (navigator.userAgent.indexOf("MSIE") != -1);
+
+colorVal = 255; direction = 'down'; color = 'red';
+function colorCycle(layer){
+	hexColor = hex(colorVal);
+	if (color == 'red') document.all[layer].style.color =  'ff' + hexColor + hexColor;
+	else if (color == 'blue') document.all[layer].style.color =  hexColor + hexColor + 'ff';
+
+	if (direction == 'up'){
+		colorVal += 5;
+		if (colorVal == 255){
+			direction = 'down';
+			if (color == 'red') color = 'blue';
+			else if (color == 'blue') color = 'red'; 
+		}
+	}
+
+	else if (direction == 'down'){
+		colorVal -= 5;
+		if (colorVal == 0) {
+			direction = 'up';
+		}
+	}
+	setTimeout("colorCycle('cycleLayer')", 0);
+}
+
+function hex(number){
+	return pad(number.toString(16),2);
+}
+
+function pad(number, len){
+	// add leading zeroes
+	var numLen = number.toString().length;
+	var result = '';
+	for(n=0; n<len-numLen; n++){
+		result = '0' + result;
+	}
+	return result+number;
+}
+
+function popWindow(loc,nam,width,height){
+	window.open(loc,nam,"0,0,width=" + width + ",height=" + height + ",top=40,left=20,toolbar=no,location=no,status=no,directories=no,menubar=no,scrollbars=no,resizable=no");
+}
+</script>
+
+</head>
+
+<style type="text/css">
+#logoLayer{
+	color: white;
+	font-size:18px;
+	font-weight: bold;
+	font-family:arial,helvetica;
+}
+#cycleLayer{
+	color: white;
+	font-size:18px;
+	font-weight: bold;
+	font-family:arial,helvetica;
+}
+#text{
+	color: white;
+	font-size:12px;
+	font-family:arial,helvetica;
+}
+#smallText{
+	color: white;
+	font-size:10px;
+	font-family:arial,helvetica;
+}
+#copyright{
+	color: gray;
+	font-size:10px;
+	font-family:arial,helvetica;
+}
+a{color:white;text-decoration:none;}
+a:hover{color:red;text-decoration:none;}
+input { font-family: arial; font-weight:bold;}
+textarea { font-family: arial; font-weight:bold;}
+option { font-family: arial; font-weight:bold;}
+select { font-family: arial; font-weight:bold;}
+
+</style>
+
+<body bgcolor=black onLoad="colorCycle('cycleLayer')">
+
+
+<table width=100% height=90%>
+	<tr>
+		<td valign=middle align=center>
+			<a title="Click here to continue..." href="javascript:popWindow('register.html', 'register', 480,180)" onmouseover="window.status='';return true;"><img src="monomovie.gif" width=360 height=50 border=0 alt="Click here to continue..."></a>
+		</td>
+	</tr>
+</table>
+
+<script>
+if (explorer){
+document.write('<center><div id="smallText">VISIT</div><a target="_top" href="http://www.digitalsexlife.com/">');
+document.write('<span id="logoLayer">DIGITAL<span id="cycleLayer">SEX</span>LIFE</span></a>');
+document.write('</center>');
+}
+</script>
+<noscript>
+You need a JavaScript capable browser to access this site.
+</noscript>
+</body>
+
+</html>

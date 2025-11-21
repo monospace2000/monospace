@@ -1,0 +1,46 @@
+<html>
+<head>
+	<title>m o n o s p a c e : Forwarding you...</title>
+<script type="text/javascript">
+var delay = 1; // time to wait before next page loads
+
+var nextPageStr = document.location.search.toString();
+var nextPageLoc = nextPageStr.substring(1, nextPageStr.length);
+
+function forward(){
+	window.setTimeout('document.location=nextPageLoc', delay*1000);
+}
+
+function writeLink(linkName){
+	document.write('<a href="' + nextPageLoc + '">' + linkName + '</a>');
+}
+</script>
+<style type=text/css>
+body td{
+	font-family: courier, courier new, monospace;
+	font-size: 12px;
+}
+#small{
+	color: gray;
+	font-size: 10px;
+	font-family: arial, helvetica;
+}
+</style>
+</head>
+<body text=white bgcolor=black link=white alink=white vlink=white onLoad="forward()">
+
+<table width="100%" height="80%"><tr><td align=center valign=middle>
+
+<br>Thanks for visiting monospace.
+<br>Have a nice day.
+
+
+</td></tr></table>
+<div id=small align=center>
+You will be forwarded to your destination in <script type="text/javascript">document.write(delay)</script> seconds.
+<br>Or click <script type="text/javascript">writeLink("here")</script> if you don't want to wait any longer.
+<br>To avoid seeing this page, select "Open links in new browser window" in your monospace preferences!
+<div>
+
+</body>
+</html>

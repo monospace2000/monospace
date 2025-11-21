@@ -1,0 +1,124 @@
+body{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:12px;
+	background: url(/images/newback.gif);
+	background-repeat: no-repeat;
+	background-color: black;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+td{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:12px;
+}
+.monobig{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:72px;
+}
+.subhead{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:14px;
+	font-weight: bold;
+}
+.tagline1{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size: 12px;
+}
+.tagline{
+	font-family: palatino;
+	color: gray;
+	font-size:18px;
+	font-style: italic;
+	letter-spacing: 0.1em;
+}
+.quote{
+	color: 999999;
+}
+.section{
+	color: gray;
+}
+a{
+	font-family: courier, courier new, monospace;
+	color: gray;
+	text-decoration: none;
+	border-type: solid
+	
+}
+a:hover{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: none;
+}
+a.bright{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: none;
+}
+a.bright:hover{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: underline;
+}
+.copyright{
+	font-family: arial, helvetica;
+	font-size: 9px;
+	color: 333333;
+	text-align: center;
+}
+.small{
+	font-family: arial, helvetica;
+	font-size: 9px;
+	color: gray;
+}
+
+#trademark{
+	font-family: verdana;
+	font-size: 7px;
+	color: gray;
+	font-style: normal;	
+	vertical-align: super
+}
+#glowLayer{
+	font-family: palatino, times new roman; 
+	font-size: 18px; 
+	font-style: italic; 
+	color: gray;
+}
+
+
+#logoLayer{
+	color: white;
+	font-size:18px;
+	font-weight: bold;
+	font-family:arial,helvetica;
+}
+#cycleLayer{
+	color: white;
+	font-size:18px;
+	font-weight: bold;
+	font-family:arial,helvetica;
+}
+#text{
+	color: white;
+	font-size:12px;
+	font-family:arial,helvetica;
+}
+#smallText{
+	color: white;
+	font-size:10px;
+	font-family:arial,helvetica;
+}
+
+
+#iTimeLayer{
+	font-family: courier, courier new;
+	color: white;
+	font-size: 12px;
+}

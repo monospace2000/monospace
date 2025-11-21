@@ -1,0 +1,59 @@
+body{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:12px;
+}
+td{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:12px;
+}
+.monobig{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:72px;
+}
+.subhead{
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:14px;
+	font-weight: bold;
+}
+a{
+	font-family: courier, courier new, monospace;
+	color: gray;
+	text-decoration: none;
+}
+a:hover{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: none;
+}
+a.bright{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: none;
+}
+a.bright:hover{
+	font-family: courier, courier new, monospace;
+	color: white;
+	text-decoration: underline;
+}
+.copyright{
+	font-family: arial, helvetica;
+	font-size: 9px;
+	color: 333333;
+	text-align: center;
+}
+.small{
+	font-family: arial, helvetica;
+	font-size: 9px;
+	color: gray;
+}
+select{
+	background-color: black;
+	border-color: black;
+	font-family: courier, courier new, monospace;
+	color: white;
+	font-size:12px;
+}

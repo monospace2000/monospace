@@ -1,0 +1,605 @@
+<html>
+	<title>m o n o s p a c e</title>
+	<script type="text/javascript" language="javascript" src="/web/20010720225337js_/http://www.monospace.com/monospace.js"></script>
+	<script type="text/javascript" language="javascript">
+		if (ie) document.write('<link rel=stylesheet href="/homepage1.css">');
+		else if (ns) {
+			document.open();
+			document.write('<link rel=stylesheet href="/homepage1_ns.css">');
+			document.close();
+		}
+		else if (!mac) document.write('<link rel=stylesheet href="/homepage1_win.css">');
+	</script>
+
+<script type="text/javascript">
+
+function loadPrefs(){
+	savedPrefs = unescape(document.cookie);
+	if (savedPrefs.indexOf("prefs") != -1){
+		userPrefs = true;
+		tmpArray = savedPrefs.substring(6, savedPrefs.length).split("+");
+		prefs = new Array();
+		for (var i=0; i<tmpArray.length; i++){
+			nameValuePair = tmpArray[i].split("=");
+			prefs[nameValuePair[0]] = nameValuePair[1];	
+		}
+	} else userPrefs = false;
+}
+
+loadPrefs();
+
+
+if (userPrefs){
+	// set a "last visited cookie" only if user has prefs
+	lastVisited = new Date();
+//	lastVisited = lastVisited.toUTCString();
+	expDate = new Date();
+	expDate = new Date(expDate.setFullYear(expDate.getFullYear()-1));
+	document.cookie = "lastVisited=" + escape(lastVisited) + "; expires=" + expDate.toUTCString();
+}
+
+
+function redirect(destination){
+	var domain ="http://www.monospace.com"; // needed by Netscrape
+	var fwdPage = domain + "/forward.html";
+	
+	// external page
+	if (destination.indexOf('monospace') == -1 && destination.indexOf('http://') != -1){
+		
+		// no prefs set: use same window with a delay
+		if (!userPrefs){
+			document.location = fwdPage + "?" + destination;
+		
+		// user has prefs
+		} else{
+
+			// same window with delay
+			if (prefs.linkOptions == "same"){
+				document.location = fwdPage + "?" + destination;		
+	
+			// open new window
+			} else{
+				window.open(destination, "", "favorites=yes,toolbar=yes,location=yes,status=yes,directories=yes,menubar=yes,scrollbars=yes,resizable=yes");
+			}
+		}
+	
+	// internal page
+	}else{
+		document.location = destination;
+	}
+}
+
+function welcome(){
+	if (userPrefs){
+		if (prefs.name != "") {
+			markup = '<br><a class=bright href="/preferences.html" title="Click here if you\'re not ' + prefs.name + '">Hi ' + prefs.name + '!</a><br>';
+			document.write(markup);
+		}
+	} else{
+		markup = '<br><a class=bright href="/preferences.html" title="Edit preferences">Hi! Please take a moment to set your preferences for this page.</a><br>';
+		document.write(markup);
+	}
+}
+
+function showDate(){
+	months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+	today = new Date();
+	thisDate = today.getDate();
+	thisMonth = months[today.getMonth()];
+	thisYear = today.getFullYear();
+	dateString = thisMonth + " " + thisDate + ", " + thisYear;
+	document.open();
+	document.write(dateString);
+	document.close();
+}
+
+
+</script>
+	<style type="text/css">
+	.box{
+		border-style: solid;
+		border-color: 333333x;
+		border-width: 1px;
+		padding: 1px;
+	}
+	</style>
+</head>
+
+<body bgcolor="black" text="white" link="gray" vlink="gray" alink="white" onload="popAnnounce();"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;" toolbar-mode="auto">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="donato" style="position:relative;width:100%;height:0;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=https%3A//web.archive.org/web/20010720225337/http%3A//www.monospace.com/"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;" nav="async">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-100.png, https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, https://web-static.archive.org/_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.monospace.com/" onfocus="this.focus();this.select();" style="flex:1;"/><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20010720225337" /><input type="submit" value="Go" />
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+                <div class="s" id="wm-nav-captures" style="flex:1;">
+                    <a class="t" href="/web/20010720225337*/http://www.monospace.com/" title="See a list of every capture for this URL">239 captures</a>
+          <div class="r" title="Timespan for captures of this URL">02 Dec 1998 - 26 Sep 2025</div>
+          </div>
+        <div class="k">
+          <a href="" id="wm-graph-anchor">
+            <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+              <canvas id="wm-sparkline-canvas" width="750" height="27" border="0"></canvas>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+        <tbody>
+          <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+          <tr class="m">
+            <td class="b" nowrap="nowrap">Jun</td>
+            <td class="c" id="displayMonthEl" title="You are here: 22:53:37 Jul 20, 2001">JUL</td>
+            <td class="f" nowrap="nowrap">Aug</td>
+          </tr>
+          <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+          <tr class="d">
+            <td class="b" nowrap="nowrap"><span class="ta"></span></td>
+            <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 22:53:37 Jul 20, 2001">20</td>
+            <td class="f" nowrap="nowrap"><span class="ta"></span></td>
+          </tr>
+          <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+          <tr class="y">
+            <td class="b" nowrap="nowrap">2000</td>
+            <td class="c" id="displayYearEl" title="You are here: 22:53:37 Jul 20, 2001">2001</td>
+            <td class="f" nowrap="nowrap">2002</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+                <span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#" title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+        </span>
+                <a class="xxs" href="https://help.archive.org/help/category/the-wayback-machine/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+        <a id="wm-tb-close" href="#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="/web/20010720225337/http://web.archive.org/screenshot/http://www.monospace.com/"
+           id="wm-screenshot"
+           title="screenshot">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+        <a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20010720225337/http://www.monospace.com:80/" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+        <a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20010720225337/http://www.monospace.com:80/" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+        <a id="wm-expand" class="wm-btn wm-closed" href="#expand"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+        <div id="wm-capinfo-notice" source="api"></div>
+                <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center;padding:2px 0;">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexa_dg)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/alexa_dg" target="_new"><span class="wm-title">Alexa Crawls DG</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Crawl data donated by Alexa Internet. This data is currently not publicly accessible
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center;padding:2px 0;" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="https://web-static.archive.org/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20010720225337/http://www.monospace.com:80/</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(750,27,25,2,"web","http://www.monospace.com/","20010720225337",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<tr valign="top">
+		<td>
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td colspan="3" valign="bottom"><!-- logo and greeting -->
+						<a href="/web/20010720225337/http://www.monospace.com/"><img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="391" height="51" border="0" vspace="16"></a>
+						<script type="text/javascript">welcome()</script>
+						<a href="#links">Go directly to the links</a><br><br>
+						<div align="center">
+							<img src="/web/20010720225337im_/http://www.monospace.com/images/visitorone.gif" width="245" height="15" border="0">
+						</div>
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td rowspan="5" nowrap valign="top"><!-- sidebar -->
+						<br><br><script language="JavaScript">
+							showDate();
+						</script>
+						<br><br>
+						
+						<div class="subhead">works</div>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/old/console/&quot;)" title="The original monospace console (Shockwave)">The monospace console</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://artists.mp3s.com/artists/26/monospace.html&quot;)" title="Original songs by monospace, hosted at MP3.com">Songs From A Bucket</a>
+						<br><font color="red">HOT! </font><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.digitalsexlife.com&quot;)" title="Goof off!">digitalSEXlife</a>
+						<br><br><br>
+						<div class="subhead">games</div>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nickstudio.com/monospace/concentration/&quot;)" title="The classic memory game">Concentration</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nickstudio.com/monospace/blackjack/&quot;)" title="Get your chips off!">BlackJack</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nickstudio.com/monospace/crucify/&quot;)" title="God's Word Game for the Entire Family">Crucify!</a>
+						<br><br><br>
+						<div class="subhead">goodies</div>
+						<br><font color="yellow">NEW! </font><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/classes.html&quot;)" title="One-on-one training now available!">monospace courses</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/buttons.html&quot;)" title="Handy toolbar buttons for your web browser">Browser Buttons</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/blink.html&quot;)" title="How to do blinking text in Internet Explorer">Blinking text for IE</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/slideshow/slideshow.html&quot;)" title="Automatically display a series of images">Image Slideshow</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/rot13.html&quot;)" title="The Poor Man's Crypto">Rot13</a>
+						<br><br><br>
+						<div class="subhead">monospace</div>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/about.html&quot;)" title="What the hell is all this?">About this page</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/preferences.html&quot;)" title="Set your options for viewing this site">Edit preferences</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.monospace.com/contact.html&quot;)" title="Send email to monospace">Contact monospace</a>
+						<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:suggest()" title="Know of a cool site that should be listed here? Send me the URL">Suggest a link</a>
+					</td>
+					<td rowspan="5"><!-- rightmargin -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+				</tr>
+			
+				<tr>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td colspan="2" valign="top"><!-- header1 -->
+						<span class="section">Today's musings:</span>
+					</td>
+					<td rowspan="4" valign="top"><!-- image -->
+<!-- 						<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" -->
+<!-- 						codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" -->
+<!-- 						WIDTH=160 HEIGHT=240> -->
+<!-- 						<PARAM NAME=movie VALUE="http://www.nickstudio.com/monospace/backgroundmusic/cello.swf"> <PARAM NAME=quality VALUE=high> <PARAM NAME=bgcolor VALUE=#000000> <EMBED src="http://www.nickstudio.com/monospace/backgroundmusic/cello.swf" quality=high bgcolor=#000000  WIDTH=160 HEIGHT=240 TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"></EMBED> -->
+<!-- 						</OBJECT> -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/icons/box.gif" width="127" height="241" align="right" hspace="16" vspace="0" border="0" alt="Box">
+					</td>
+				</tr>
+				
+				<tr>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td valign="top"><!-- content1 -->
+<!-- content ---------------------------------------------------------->
+<img src="/web/20010720225337im_/http://www.monospace.com/images/hermanbrood.jpg" alt="Herman Brood" width="132" height="200" border="1" align="left">
+<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="4" height="200" border="0" align="left">
+<p>On Wednesday July 11, Dutch rock phenomenon Herman Brood jumped to his death from the roof of the Amsterdam Hilton hotel, leaving his fans and the nation in shock. Herman Brood, who was from my home town of Zwolle, was arguably Holland's wildest rocker and the nation's best known (and loved) drug addict. What a way to go Herman! We will miss you forever.
+<p><a href="https://web.archive.org/web/20010720225337/http://www.angelfire.com/weird/webdesign/NeverBeClever.rm">Herman Brood &amp; His Wild Romance: Never Be Clever</a>
+<p><a href="https://web.archive.org/web/20010720225337/http://members.aol.com/uheep2/brood.htm">Biography and Discography</a>
+<!-- <p><a href="http://www.angelfire.com/weird/webdesign/GoingToTheCity.rm">Herman Brood: Going To The City (live)</a> -->
+<!-- <p><a href="http://www.angelfire.com/weird/webdesign/Rockn'rollJunkie(live).rm">Herman Brood: Rock 'n Roll Junkie (live)</a> -->
+<p><a href="https://web.archive.org/web/20010720225337/http://www.hermanbrood.nl/">Official Web site</a>
+<p><a href="https://web.archive.org/web/20010720225337/http://www.planetbrood.nl/">Unofficial Web site</a>
+<!-- content end ------------------------------------------------------>
+					<br><img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="48" height="48" border="0">
+					</td>
+				</tr>
+				
+				<tr>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td colspan="2" valign="top"><!-- header2 -->
+						<span class="section">Featured link:</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><!-- spacer -->
+						<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td><!-- spacer -->
+					<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+					</td>
+					<td valign="top">
+<p><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.gregpalast.com&quot;)" class="bright" title="Featured Link">Gregory Palast</a> <span class="section">Investigative reporter gets sued for "libel" by a major finacial backer of G. W. Bush</span>
+					<br><br><img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="48" height="48" border="0">
+					</td>
+				</tr>
+			</table>		
+
+		</td>
+
+	</tr>
+
+	<tr>
+		<td colspan="6">
+<!-- bookmarks start here -->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<tr valign="top">
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0" align="top">
+		</td>
+		<td colspan="11">
+			<span class="section">Previously featured links:</span>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td colspan="9" valign="top">
+<a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.ala.org/alonline/news/10reasons.html&quot;)" class="bright" title="Featured Link">10 Reasons Why the Internet Is No Substitute for a Library</a> <span class="section"></span>
+<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.ninjai.com/&quot;)" class="bright" title="Featured Link">Ninjai, The Little Ninja</a> <span class="section">(online Flash action/adventure series)</span>
+<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.adbusters.org/&quot;)" class="bright" title="Featured Link">This July 4th, declare independence from corporate rule!</a>
+<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.gorkhouse.com/newyork.html&quot;)" class="bright" title="Featured Link">Smart-Ass Guide to New York City</a> <span class="section">(Cartoon Web Cams)</span>
+<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.xs4all.nl/~rostoad/&quot;)" class="bright" title="Featured link">MIND&nbsp;&nbsp;M&nbsp;Y&nbsp;&nbsp;&nbsp;G&nbsp;&nbsp;A&nbsp;&nbsp;P</a> <span class="section">(The travels of Diddybob and Buddybob)</span>
+<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.jonathonrobinson.com/secret.html&quot;)" class="bright" title="Featured link">The Terrible Secret of Space</a> <span class="section">(A Flash music video)</span>
+<br><br>
+<center>
+<a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://artists.mp3s.com/artists/26/monospace.html&quot;)" title="Original songs by monospace, hosted at MP3.com">
+<img src="/web/20010720225337im_/http://www.monospace.com/bucketbanner.gif" width="486" height="60" border="0" "songs from a bucket">
+</a>
+</center>
+<br>
+		</td>
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+	</tr>
+	<tr valign="top">
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0" align="top">
+		</td>
+		<td colspan="11">
+			<a name="links">
+			<span class="section">Assorted links:</span>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<div class="subhead">search</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.google.com/&quot;)" title="The Web's best search engine">Google Search</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://images.google.com/&quot;)" title="Search for images on the Web">Google Image Search</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://ragingsearch.altavista.com/&quot;)" title="Try this if you couldn't find it on Google">Raging Search</a>
+			<br><br><br>
+			<div class="subhead">directories</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.yahoo.com/&quot;)" title="Extensive categorized website listings">Yahoo!</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.555-1212.com/&quot;)" title="Yellow Pages, White Pages, Maps, Reverse Lookups and more">555-1212.com</a>
+			<br><br><br>
+			<div class="subhead">tools</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mail2web.com/&quot;)" title="Access your POP email through a Web browser">Mail2Web</a>
+			<br><br><br>
+			<div class="subhead">lookup</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.dict.org/&quot;)" title="Look up a word using the DICT protoccol">DICT.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.m-w.com/&quot;)" title="English dictionary">Merriam Webster</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.bartleby.com/&quot;)" title="Dictionaries, thesaurus, quotes and more">Bartleby.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.britannica.com/&quot;)" title="Limited web edition of the famous reference work">Encyclopaedia Britannica</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.acronymfinder.com/&quot;)" title="Exhaustive list of acronyms and abbreviations">Acronym Finder</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.freedict.com/onldict/dut.html&quot;)" title="Dutch to English and vice versa (rather incomplete)">Dutch-English Dictionary</a>
+			<br><br><br>
+			<div class="subhead">local</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://newyork.citysearch.com/&quot;)" title="Events and venues in New York Cit">CitySearch New York</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nytoday.com/&quot;)" title="Events and venues in New York City">New York Today</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.villagevoice.com/&quot;)" title="New York's famous weekly newspaper">The Village Voice</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.ci.nyc.ny.us/&quot;)" title="Official site of the City of New York">NYC Government</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mta.nyc.ny.us/&quot;)" title="Subway and commuter train information">Transit Authority</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.straphangers.org/&quot;)" title="Interactive subway map">Straphangers Campaign</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://newyork.craigslist.org/&quot;)" title="News, events, jobs, classifieds">Craig's List for NYC</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.forgotten-ny.com/&quot;)" title="Lesser known facts about the greatest city in the world">Forgotten New York</a>
+		</td>						
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<div class="subhead">news</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nytimes.com/&quot;)" title="Prominent American newspaper">The New York Times</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.washingtonpost.com/&quot;)" title="Prominent American newspaper">The Washington Post</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.salon.com/&quot;)" title="Online news magazine">Salon.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://npr.org/&quot;)" title="Publicly funded radio: news and information">National Public Radio</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.1010wins.com/&quot;)" title="Local New York news radio">1010 WINS News Radio</a>
+			<br><br><br>
+			<div class="subhead">international</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.bbc.co.uk/worldservice/index_stat.shtml&quot;)" title="News with an international perpective">BBC World Service</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.iht.com/&quot;)" title="International news">International Herald Tribune</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.kranten.com/&quot;)" title="Dutch newspaper portal">Kranten.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.groene.nl/&quot;)" title="Holland's oldest independent weekly">De Groene Amsterdammer</a>
+			<br><br><br>
+			<div class="subhead">alternative</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.cspan.org/&quot;)" title="Continuous plitical coverage, public service by the US cable networks">C-SPAN.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.consortiumnews.com/&quot;)" title="Facts about the current illegitimate US government">Consortium News</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.bushwatch.com/&quot;)" title="Things about the fraudulent president other media won't tell you">Bush Watch</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.adbusters.org/&quot;)" title="An alternative look at advertising">AdBusters</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://home.att.net/~Resurgence/&quot;)" title="The late Steve Kangas' excellent pages on all things liberal">Liberalism Resurgence</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.institutefordemocracy.org/&quot;)" title="Independent organization monitoring American politics">Institute for Democracy Studies</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.fair.org/&quot;)" title="Fairness and Accuracy In Reporting">FAIR.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.indymedia.org/&quot;)" title="A collective of independent media organizations and hundreds of journalists offering grassroots, non-corporate coverage">Independent Media Center</a>
+			<br><br><br>
+			<div class="subhead">conspiracy</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.csicop.org/&quot;)" title="&quot;Scientifically Investigating Paranormal and Fringe Science Claims&quot;">The Skeptical Inquirer</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.skepdic.com/&quot;)" title="&quot;A Guide to the New Millenium&quot; - A great site debunking most of the more persistent conspiracy theories">The Skeptic's Dictionary</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.floodlight.org/&quot;)" title="Debunking conspiracy theories from a Christian perspective">Floodlight.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.whatreallyhappened.com/&quot;)" title="A classic example of right-wing conpsiracy theories">What Really Happened</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.conspiracy-net.com/&quot;)" title="British conspiracy theory reference site">Conspiracy Net</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.newnetizen.com/&quot;)" title="&quot;Get Free, Get Freedom&quot;">The New Netizen</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.newnetizen.com/&quot;)" title="&quot;Nazis, the CIA, the Vatican, AIDS, and why you are next.&quot;">New World Order - The Occult Conspiracy</a>
+		</td>
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<div class="subhead">macintosh</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.apple.com/&quot;)" title="The computer for the rest of us">Apple Computer</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.macintouch.com/&quot;)" title="&quot;The original Mac news and information site since 1994&quot;">MacInTouch</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.macnn.com/&quot;)" title="&quot;ReadMe First&quot;">Macintosh News Network</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.macfixit.com/&quot;)" title="Macintosh troubleshooting information">MacFixIt</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mosr.com/&quot;)" title="Gossip and rumors about your favorite platform">Mac OS Rumors</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.versiontracker.com/&quot;)" title="List of current software updates">Version Tracker</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://hyperarchive.lcs.mit.edu/HyperArchive.html&quot;)" title="The largest collection of Macintosh shareware">HyperArchive</a>
+			<br><br><br>
+			<div class="subhead">html</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.irt.org/&quot;)" title="Information Related Technologies">irt.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="https://web.archive.org/web/20010720225337/ javascript:redirect(&quot;http://hotwired.lycos.com/webmonkey/&quot;)" title="&quot;The Web developer's resource&quot;">WebMonkey</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.webreference.com/&quot;)" title="&quot;Dev the Web&quot;">WebReference</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.htmlhelp.com/&quot;)" title="&quot;Making the Web accessible to all&quot; by the Web Design Group">HTML Help</a>
+			<br><br><br>
+			<div class="subhead">flash</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.moock.org/&quot;)" title="Webdesign, Flash, Javascript Tips &amp; Tricks">moock.org</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.flashkit.com/&quot;)" title="A Flash developer resource site">FlashKit</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.flashmove.com/&quot;)" title="The Flash movement">FlashMove</a>
+			<br><br><br>
+			<div class="subhead">tech news</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://news.cnet.com/&quot;)" title="&quot;Tech news first&quot;">CNET</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.zdnet.com/zdnn/&quot;)" title="&quot;Technology news now&quot;">ZDNet</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://slashdot.org/&quot;)" title="&quot;News for nerds. Stuff that matters.&quot;">Slashdot</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.wired.com/&quot;)" title="Technology news">Wired</a>
+			<br><br><br>
+			<div class="subhead">organizations</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://wwwac.org/&quot;)" title="New York based web artists organization">World Wide Web Artists' Consortium</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.eff.org/&quot;)" title="&quot;Protecting rights and promoting freedom in the electronic frontier&quot;">Electronic Frontier Foundation</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.cdt.org/&quot;)" title="&quot;Promoting democratic values and constitutional liberties in the digital age&quot;">Center for Democracy and Technology</a>
+		</td>
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<div class="subhead">midi</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.harmonycentral.com/&quot;)" title="Gear news, reviews and classifieds">Harmony Central</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.midifarm.com/&quot;)" title="All things MIDI">MIDI Farm</a>
+			<br><br><br>
+			<div class="subhead">guitars</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.stewmac.com/&quot;)" title="Stewart-McDonald's Guitar Shop Supply">StewMac.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.guitarnoise.com/&quot;)" title="Online guitar college">Guitar Noise</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.olga.net/&quot;)" title="Online Guitar Archive: Tabs and Chords">OLGA</a>
+			<br><br><br>
+			<div class="subhead">drums</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.drumweb.com/&quot;)" title="Online drum lessons">DrumWeb</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.rhythmweb.com/&quot;)" title="World Percussion and World Rhythms">RhythmWeb</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.thedrumclub.com/&quot;)" title="&quot;The Premier Percussion Destination&quot;">The Drum Club</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.drumheads.org/&quot;)" title="Online hangout for &quot;gearheads&quot;">Drumheads.org</a>
+			<br><br><br>
+			<div class="subhead">songwriting</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.musesmuse.com/&quot;)" title="Songwriting tips and tools">The Muse's Muse</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.rhymezone.com/&quot;)" title="Online Thesaurus and Rhyming Dictionary">The Rhyme Zone</a>
+			<br><br><br>
+			<div class="subhead">animation</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.shockwave.com/&quot;)" title="Games and animations">Shockwave.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.joecartoon.com/&quot;)" title="Wickedly funny Flash cartoons">Joe Cartoon</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.icebox.com/&quot;)" title="The home of Mister Wong">Icebox</a>
+			<br><br><br>
+			<div class="subhead">music</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.allmusic.com/&quot;)" title="Bands and music reviews">All Music Guide</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.ubl.com/&quot;)" title="Bands and music reviews">Ultimate Band List</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.cddb.com/&quot;)" title="Online database of audio CD contents (no actual music)">CD Database</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.audiofind.com/&quot;)" title="Search engine for music files">AudioFind.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mp3.com/&quot;)" title="Independent Internet music">MP3.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.live365.com/&quot;)" title="Internet radio listings">Live 365</a>
+			<br><br><br>
+			<div class="subhead">movies</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.allmovie.com/&quot;)" title="Movies and reviews">All Movie Guide</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.moviefone.com/&quot;)" title="Buy movie tickets online">Moviefone</a>
+		</td>				
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+		<td>
+			<div class="subhead">friends</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nickstudio.com&quot;)" title="New York special effects studio">Nick Ericson Studio</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.dirkvancoevorden.nl&quot;)" title="My musical buddy when I grew up">Dirk Van Coevorden</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.cinemavii.com&quot;)" title="Peter Dizozza">Cinema VII</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.thai-in.com&quot;)" title="Site for Thai expatriates">Thai-In</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.topophonien.de&quot;)" title="Sabine Schaefer's Sound Installations">TopoPhonien</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.hedda.com&quot;)" title="The Queen of Comedy">Hedda Lettuce Worldwide</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.databaas.com&quot;)" title="Dutch computer Artist">Databaas</a>
+			<br><br><br>
+			<div class="subhead">science</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mcs.surrey.ac.uk/Personal/R.Knott/Fibonacci/fib.html&quot;)" title="Fibonacci Numbers, the Golden Section and the Golden String">Fibonacci Numbers</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.howstuffworks.com&quot;)" title="Learn How Stuff Works">How Stuff Works</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://antwrp.gsfc.nasa.gov/apod/&quot;)" title="Fascinating astronomy pictures explained by NASA">Astronomy Picture of the Day</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.treasure-troves.com/&quot;)" title="Miscellaneous science tidbits">Treasure Troves of Science</a>
+			<br><br><br>
+			<div class="subhead">erotica</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.tantra.com/&quot;)" title="&quot;The Resource for Tantra, Tantric Sex &amp; The Kama Sutra&quot;">Tantra.com</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.nerve.com/&quot;)" title="&quot;Think about sex&quot;">Nerve Magazine</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.scarletletters.com/&quot;)" title="&quot;The Journal of Femmerotica&quot;">Scarlet Letters</a>
+			<br><br><br>
+			<div class="subhead">esoterica</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.freewillastrology.com/&quot;)" title="Rob Brezsny's famous weekly horoscope">Free Will Astrology</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.astro.com/&quot;)" title="Free personal readings">Astrodienst</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.facade.com/&quot;)" title="Tarot, Runes, I-Ching, Biorhythms">Facade</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.chinese-astrology.com/&quot;)" title="Chinese Astrology">Chinese Astrology</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.kabalarians.com/&quot;)" title="Numerology: What's in YOUR name?">Kabalarians</a>							
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.dreamscape.com/morgana/titan.htm&quot;)" title="Selected prophecies of the medieval alchemist">Nostradamus</a>							
+			<br><br><br>
+			<div class="subhead">drugs</div>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.norml.org/&quot;)" title="National Organization for the Reform of Marijuana Laws">NORML</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.drugsense.org/&quot;)" title="Drug policy reform">Drug Sense</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.marijuanamagazine.com/&quot;)" title="The Drug War against the sick">Medical Marijuana Magazine</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;https://web.archive.org/web/20010720225337/http://www.mcwilliams.com/books/books/aint/&quot;)" title="&quot;The Absurdity of Consensual Crimes in a Free Country&quot;">Ain't Nobody's Business If You Do</a>
+		</td>	
+		<td>
+			<img src="/web/20010720225337im_/http://www.monospace.com/images/pixel.gif" width="32" height="32" border="0">
+		</td>
+	</tr>
+</table>
+
+<!-- bookmarks end here -->
+		</td>
+	</tr>
+</table>
+
+<div align="center"><br><br><img src="/web/20010720225337im_/http://www.monospace.com/images/apple.gif" width="24" height="29" alt="Apple"><br><font face="Georgia, Times, Times New Roman">Made on a Mac.</font></div>
+<div class="copyright" align="center"><br><br>Copyright (c)2001 monospace. All Rights Reserved.</div>
+<font color="#000000"></font>
+<br><br>
+</body>
+
+</html>

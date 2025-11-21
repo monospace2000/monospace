@@ -1,0 +1,124 @@
+hr {
+	width: 100%;
+	height: 1px;
+	color: 333333;
+}
+td{
+	font-family: verdana, geneva, sans-serif; 
+	color: white;
+	font-size: 10px;
+}
+body{
+	font-family: verdana, geneva, sans-serif; 
+	font-size:10px;
+	color: white;
+	background: url(images/newback.gif);
+	background-repeat: no-repeat;
+	background-color: 000000;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.link{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 10px;
+	background: url(images/blackglass_alt.gif);
+	background-repeat: no-repeat;
+	background-color: 000000;
+	margin-bottom: 16px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: 333333;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 4px;
+	padding-bottom: 8px;
+}
+.category{
+	font-family: verdana, geneva, sans-serif; 
+	color: ffffff;
+	font-size: 12px;
+	font-weight: bold;
+	background: url(images/glass_bottom.gif);
+	background-repeat: no-repeat;
+	background-color: 000000;
+	padding-bottom: 4px;
+	margin-bottom: 8px;
+}
+.subhead{
+	font-family: verdana, geneva, sans-serif; 
+	color: ffffff;
+	font-size: 12px;
+	font-weight: bold;
+}
+.section{
+	color: gray;
+}
+a{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 10px;
+	color: gray;
+	text-decoration: none;
+}
+a:hover{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 10px;
+	color: white;
+	text-decoration: none;
+}
+a.bright{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 10px;
+	color: white;
+	text-decoration: none;
+}
+a.bright:hover{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 10px;
+	color: white;
+	text-decoration: underline;
+}
+.copyright{
+	font-family: verdana, geneva, sans-serif; 
+	font-size: 9px;
+	color: gray;
+	text-align: center;
+}
+.small{
+	font-family: arial, helvetica;
+	font-size: 9px;
+	color: gray;
+}
+
+/* COLORS */
+
+.red{
+	color: #cc0000;
+}
+.yellow{
+	color: #ffcc00;
+}
+.blue{
+	color: #003399;
+}
+.green{
+	color: #009900;
+}
+.gray{
+	color: gray;
+}
+
+/* STYLES FOR DIGITALSEXLIFE LOGO ANIMATION */
+
+#logoLayer{
+	font-family: arial, helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}#cycleLayer{
+	font-family: arial, helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}

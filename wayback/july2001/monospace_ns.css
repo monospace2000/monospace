@@ -1,0 +1,166 @@
+body{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size:11px;;
+	color: #ffffff;
+	background: #000000 url(images/glow.gif) no-repeat fixed;
+	margin: 0px;
+	scrollbar-arrow-color :#FFF; 
+	scrollbar-face-color: #000;
+	scrollbar-base-color :#000;
+	scrollbar-track-color :#333;
+	scrollbar-shadow-color: #666;
+	scrollbar-darkshadow-color: #000;
+	scrollbar-3dlight-color: #000;
+	scrollbar-highlight-color: #666;
+ }
+td{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	color: #ffffff;
+	font-size: 11px;
+}
+.link{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 11px;
+	background: url(images/blackglass_alt.gif) #000000 no-repeat;
+	margin-bottom: 16px;
+	border: solid 1px #333333;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 4px;
+	padding-bottom: 8px;
+}
+.category{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	color: ffffff;
+	font-size: 13px;
+	font-weight: bold;
+	background: url(images/glass_bottom.gif) #000000 no-repeat bottom left;
+	padding-bottom: 4px;
+	margin-bottom: 6px;
+	padding-left: 2px;
+	border: solid 1px #333333;
+	border-left: none;
+	border-top: none;
+	border-right: none;
+}
+.subhead{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	color: #ffffff;
+	font-size: 13px;
+	font-weight: bold;
+}
+.section{
+	color: #999999;
+}
+a{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 11px;
+	color: #999999;
+	text-decoration: none;
+}
+a:hover{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 11px;
+	color: #ffffff;
+	text-decoration: none;
+}
+a.bright{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 11px;
+	color: #ffffff;
+	text-decoration: none;
+}
+a.bright:hover{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 11px;
+	color: #ffffff;
+	text-decoration: underline;
+}
+.copyright{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 10px;;
+	color: #999999;
+	text-align: center;
+}
+.small{
+	font-family: "Lucida Grande", tahoma, verdana, geneva, sans-serif; 
+	font-size: 10px;;
+	color: #999999;
+}
+
+/* COLORS */
+
+.red{
+	color: #cc0000;
+}
+.yellow{
+	color: #ffcc00;
+}
+.blue{
+	color: #0033cc;
+}
+.green{
+	color: #009900;
+}
+.gray{
+	color: #999999;
+}
+.white{
+	color: #FFFFFF;
+}
+.black{
+	color: #000000;
+}
+
+
+
+.favorite{
+	color: #FFFFFF;
+}
+.favorite:hover{
+	text-decoration: underline;
+}
+
+
+/* STYLES FOR DIGITALSEXLIFE LOGO ANIMATION */
+
+#logoLayer{
+	font-family: arial, helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	color: #ffffff;
+}#cycleLayer{
+	font-family: arial, helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+input{
+	background: #000000; 
+	border: solid 1px #333333; 	
+	font-family: "Lucida Grande", verdana, geneva, sans-serif;  
+	color: white; 
+	font-size:11px; 
+}
+select{
+	background-color: black; 
+	border: solid 1px #333333; 
+	font-family: "Lucida Grande", verdana, geneva, sans-serif; 
+	font-size:11px; 
+	color: white
+}
+input.text{
+	background-color: #ffffcc; 
+	border: solid 1px #333333; 
+	font-family: "Lucida Grande", verdana, geneva, sans-serif; 
+	color: black; 
+	font-size:11px; 
+}
+textarea{
+	background-color: #ffffcc; 
+	border: solid 1px #333333; 
+	font-family: "Lucida Grande", verdana, geneva, sans-serif; 
+	color: black; 
+	font-size:11px; 
+}
