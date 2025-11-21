@@ -1,0 +1,157 @@
+html,
+body {
+    margin: 0;
+    font-family: monospace;
+    color: white;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: #000;
+}
+
+/* use a fixed pseudo-element for the background instead */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: url('/assets/images/logo_xl_transp.png') 10% 10vh no-repeat,
+        radial-gradient(
+            circle at 50% 33vh,
+            rgba(0, 0, 255, 0.75) 0%,
+            rgba(0, 0, 255, 0) 33vw
+        ),
+        #000;
+    background-size: 70%, 100%, 100%;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* everything else sits above */
+.container {
+    margin-top: 300px;
+    padding: 40px;
+    position: relative;
+    z-index: 1; /* bring sections above the pseudo background */
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin-top: 100px;
+        padding: 40px;
+        position: relative;
+        z-index: 1; /* bring sections above the spotlight */
+    }
+}
+
+.section-wrap {
+    width: 600px;
+    min-width: 200px;
+    backdrop-filter: blur(5px);
+    margin: 40px 0 0 140px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+.section-wrap.active {
+    opacity: 1;
+}
+
+.section {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3),
+        -10px 10px 10px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+        inset -5px -5px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.3) 0px,
+            rgba(255, 255, 255, 0) 40px,
+            rgba(255, 255, 255, 0) 90%
+        ),
+        linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.3) 0px,
+            rgba(255, 255, 255, 0) 20px,
+            rgba(255, 255, 255, 0.1) 40%,
+            rgba(255, 255, 255, 0) 100%
+        ),
+        rgba(0, 0, 0, 0);
+    border-radius: 16px;
+    border: solid 1px rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: 0.5s;
+    cursor: pointer;
+}
+.section-top {
+    height: 20px;
+    margin: 4px 4px 0 4px;
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.4) 0px,
+        rgba(255, 255, 255, 0) 20px
+    );
+    border-radius: 10px 10px 0 0;
+}
+.section-header {
+    font-family: 'Oswald';
+    font-size: 24px;
+    font-weight: 500;
+    margin: -16px 20px 0px 20px;
+}
+.section-content {
+    font-family: 'Roboto';
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 300;
+    margin: 10px 20px 20px;
+}
+
+/* Spotlight — behind cards */
+.spotlight {
+    position: fixed;
+    width: 320px;
+    height: 720px;
+    right: 160px;
+    bottom: 80px;
+    pointer-events: none;
+    z-index: 0; /* BELOW sections */
+}
+.spotlight .item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, background-image 0.3s ease;
+}
+.spotlight .item.active {
+    opacity: 1;
+}
+
+/* Footer */
+#copyright {
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+    padding-top: 60px;
+}
+
+@media (max-width: 768px) {
+    .spotlight {
+        right: 50%;
+        bottom: 20px;
+        transform: translateX(50%);
+        width: 200px;
+        height: 450px;
+    }
+    .section-wrap {
+        margin: 40px auto;
+        width: auto;
+    }
+}

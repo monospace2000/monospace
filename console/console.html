@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Monospace Terminal in CRT</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #000;
+            }
+
+            /* CRT container: maintain 1:1 aspect ratio */
+            #crt-wrapper {
+                position: relative;
+                width: 90vmin; /* scale square */
+                height: 90vmin;
+                max-width: 90vw;
+                max-height: 90vh;
+            }
+
+            /* CRT background */
+            #crt {
+                width: 100%;
+                height: 100%;
+                background: url('crt.jpg') no-repeat center center;
+                background-size: cover;
+                position: relative;
+            }
+
+            /* Virtual viewport aligned with CRT screen area */
+            #viewport {
+                position: absolute;
+                left: calc(670 / 4096 * 100%);
+                top: calc(750 / 4096 * 100%);
+                width: calc(2770 / 4096 * 100%);
+                height: calc(2050 / 4096 * 100%);
+                background: rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                box-sizing: border-box;
+                border-radius: 10px;
+                padding: 1.5%; /* scale padding */
+            }
+
+            /* Terminal screen */
+            #screen {
+                width: 100%;
+                height: 100%;
+                color: #0f0;
+                font-family: monospace;
+                font-size: calc(0.6vmin + 8px); /* scale text with viewport */
+                line-height: 1.2;
+                white-space: pre-wrap;
+                overflow-y: auto;
+                position: relative;
+                text-shadow: 0 0 6px rgba(0, 255, 0, 0.4);
+                backdrop-filter: brightness(1.08);
+            }
+
+            /* Scanlines behind text */
+            #screen::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                background: repeating-linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.2) 0px,
+                    rgba(0, 0, 0, 0.2) 2px,
+                    rgba(0, 0, 0, 0.05) 4px
+                );
+                mix-blend-mode: multiply;
+            }
+
+            /* Vignette behind everything */
+            #screen::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                z-index: -1;
+                background: radial-gradient(
+                    circle,
+                    rgba(0, 0, 0, 0) 55%,
+                    rgba(0, 0, 0, 0.38) 100%
+                );
+            }
+
+            .line {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .prompt {
+                flex: none;
+                color: #0f0;
+            }
+            .cmdline {
+                flex: auto;
+                outline: none;
+                caret-color: #0f0;
+            }
+            .system {
+                color: #0ff;
+            }
+            .warn {
+                color: #ff0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="crt-wrapper">
+            <div id="crt">
+                <div id="viewport">
+                    <div id="screen"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // -------------------- Terminal Script --------------------
+            const screen = document.getElementById('screen');
+            let promptStr = 'monospace$ ';
+            let currentDir = '/home/guest';
+            let maxInteger = 1000000;
+            let history = [],
+                historyIndex = -1,
+                on = false;
+
+            // Fake filesystem
+            const fileSystem = {
+                '/': ['home', 'etc', 'usr', 'tmp'],
+                '/home': ['guest'],
+                '/home/guest': ['Documents', 'Projects', 'secrets.txt'],
+                '/etc': ['passwd', 'hosts'],
+                '/usr': ['bin', 'lib'],
+                '/tmp': ['tempfile1', 'tempfile2'],
+            };
+
+            // ---- Startup sequence ----
+            function startupSequence() {
+                appendRaw('Last login: ' + new Date().toString(), 'system');
+                appendRaw('Starting up...', 'system');
+                setTimeout(() => {
+                    const freeBytes = Math.floor(
+                        Math.random() * 1e9
+                    ).toLocaleString();
+                    appendRaw(freeBytes + ' bytes free', 'system');
+                    appendRaw('Current host is MONOSPACE\n', 'system');
+                    typeWriter('System ready...\n', appendPrompt);
+                    on = true;
+                }, 800);
+            }
+
+            // Append raw line
+            function appendRaw(text, cls = '') {
+                const line = document.createElement('div');
+                line.textContent = text;
+                if (cls) line.className = cls;
+                screen.appendChild(line);
+                screen.scrollTop = screen.scrollHeight;
+            }
+
+            // Typewriter effect
+            function typeWriter(text, callback, speed = 30) {
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i >= text.length) {
+                        clearInterval(interval);
+                        if (callback) callback();
+                        return;
+                    }
+                    appendRaw(text[i], 'system');
+                    i++;
+                }, speed);
+            }
+
+            // Append inline prompt
+            function appendPrompt() {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line';
+
+                const promptSpan = document.createElement('span');
+                promptSpan.className = 'prompt';
+                promptSpan.textContent = promptStr;
+
+                const cmdline = document.createElement('span');
+                cmdline.className = 'cmdline';
+                cmdline.contentEditable = true;
+                cmdline.spellcheck = false;
+
+                lineDiv.appendChild(promptSpan);
+                lineDiv.appendChild(cmdline);
+                screen.appendChild(lineDiv);
+
+                placeCaretAtEnd(cmdline);
+
+                cmdline.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const command = cmdline.textContent.trim();
+                        cmdline.contentEditable = false;
+                        if (command) {
+                            history.push(command);
+                            historyIndex = history.length;
+                        }
+                        doCommand(command);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (history.length && historyIndex > 0) {
+                            historyIndex--;
+                            cmdline.textContent = history[historyIndex];
+                            placeCaretAtEnd(cmdline);
+                        }
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (
+                            history.length &&
+                            historyIndex < history.length - 1
+                        ) {
+                            historyIndex++;
+                            cmdline.textContent = history[historyIndex];
+                        } else {
+                            historyIndex = history.length;
+                            cmdline.textContent = '';
+                        }
+                        placeCaretAtEnd(cmdline);
+                    }
+                });
+            }
+
+            function placeCaretAtEnd(el) {
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                el.focus();
+            }
+
+            // --- Utilities ---
+            function juggle(text) {
+                let w = text.split(/\s+/);
+                if (w.length > 1) [w[0], w[1]] = [w[1], w[0]];
+                return w.join(' ');
+            }
+
+            // ---- LET'S HANDLER ----
+            function handleLets(commandString) {
+                let action = commandString.slice(5).trim();
+                if (!action) {
+                    feedback("Let's do something fun!");
+                    return true;
+                }
+
+                let words = action.split(/\s+/).map((w) => {
+                    switch (w.toLowerCase()) {
+                        case 'me':
+                            return 'you';
+                        case 'i':
+                            return 'you';
+                        case 'you':
+                            return 'me';
+                        case 'my':
+                            return 'your';
+                        case 'your':
+                            return 'my';
+                        case 'am':
+                            return 'are';
+                        case 'are':
+                            return 'am';
+                        default:
+                            return w;
+                    }
+                });
+                action = words.join(' ');
+
+                const reactions = [
+                    "Sure, let's " + action + '.',
+                    'Booting ' + action.toUpperCase() + '.EXE...',
+                    'Processing request…',
+                    'Initializing… please stand by.',
+                    'Confirmed. Executing ' + action + '.',
+                    "Hm. Okay, let's " + action + '.',
+                    'You first.',
+                    'Alright, but this wasn’t in my job description.',
+                    "Why not. Let's " + action + '.',
+                    'Running ' + action + '… if you insist.',
+                ];
+
+                if (action.match(/\bdance\b/i)) {
+                    feedback('Booting DANCE.EXE… shake responsibly.');
+                    return true;
+                }
+                if (action.match(/\bhack\b/i)) {
+                    feedback('Access denied. Nice try.');
+                    return true;
+                }
+                if (action.match(/\bgo\b/i)) {
+                    feedback('Going… eventually.');
+                    return true;
+                }
+                if (action.match(/\bopen\b/i)) {
+                    feedback('The mechanism is rusted shut.');
+                    return true;
+                }
+
+                const pick =
+                    reactions[Math.floor(Math.random() * reactions.length)];
+                feedback(pick);
+                return true;
+            }
+
+            function getDir() {
+                return fileSystem[currentDir]?.join('  ') || '.';
+            }
+
+            // ---- Command Interpreter ----
+            function doCommand(commandString) {
+                if (commandString.toLowerCase().startsWith("let's")) {
+                    if (handleLets(commandString)) return;
+                }
+
+                const args = commandString.split(/\s+/),
+                    cmd = args[0]?.toLowerCase() || '',
+                    rest = args.slice(1).join(' ');
+
+                const lastCmdLine = screen.querySelector('.cmdline:last-child');
+                if (lastCmdLine) lastCmdLine.contentEditable = false;
+
+                switch (cmd) {
+                    case 'do':
+                        rest === 'louis'
+                            ? feedback('Yodaman!')
+                            : crack(cmd, rest);
+                        break;
+                    case 'clear':
+                    case 'cls':
+                        screen.textContent = '';
+                        appendPrompt();
+                        break;
+                    case 'open':
+                        feedback('Attempting to open ' + rest);
+                        break;
+                    case 'whoami':
+                        feedback('guest');
+                        break;
+                    case 'beep':
+                    case 'sysbeep':
+                        feedback('Beep!');
+                        break;
+                    case 'help':
+                        args.length === 1
+                            ? feedback('Usage: help <command>')
+                            : feedback('Help: ' + rest);
+                        break;
+                    case 'which':
+                        args.length === 1
+                            ? feedback('Usage: which <command>')
+                            : feedback(rest + ': Not found.');
+                        break;
+                    case 'exit':
+                    case 'end':
+                        feedback('Cannot exit.');
+                        break;
+                    case 'bye':
+                        feedback('Goodbye.');
+                        break;
+                    case 'quit':
+                        feedback("You can't quit.");
+                        break;
+                    case 'ls':
+                        feedback(getDir());
+                        break;
+                    case 'pwd':
+                        feedback(currentDir);
+                        break;
+                    case 'cd':
+                        if (rest === '..' && currentDir != '/')
+                            currentDir =
+                                currentDir.split('/').slice(0, -1).join('/') ||
+                                '/';
+                        else if (
+                            fileSystem[
+                                rest.startsWith('/')
+                                    ? rest
+                                    : currentDir + '/' + rest
+                            ]
+                        )
+                            currentDir = rest.startsWith('/')
+                                ? rest
+                                : currentDir + '/' + rest;
+                        else if (rest) feedback('Directory not found: ' + rest);
+                        else appendPrompt();
+                        break;
+                    case 'test':
+                        feedback('Testing...\n1.\n2.\n3.\nOk.');
+                        break;
+                    case 'date':
+                        feedback(new Date().toDateString());
+                        break;
+                    case 'time':
+                        feedback(new Date().toTimeString());
+                        break;
+                    case 'echo':
+                    case 'print':
+                    case 'say':
+                    case 'rem':
+                        feedback(rest);
+                        break;
+                    case 'uptime':
+                        feedback('up 5 hours, 23 mins');
+                        break;
+                    case 'cat':
+                        rest
+                            ? feedback(
+                                  'Contents of ' +
+                                      rest +
+                                      ':\nNothing interesting here.'
+                              )
+                            : feedback('Usage: cat <filename>');
+                        break;
+                    case 'touch':
+                        feedback('Created file ' + rest);
+                        break;
+                    case 'mkdir':
+                        feedback('mkdir: Permission denied.');
+                        break;
+                    default:
+                        if (cmd) crack(cmd, rest);
+                        else appendPrompt();
+                }
+            }
+
+            function crack(keyword, instructions) {
+                let words = instructions.split(/\s+/).map((w) => {
+                    switch (w.toLowerCase()) {
+                        case 'me':
+                        case 'i':
+                            return 'you';
+                        case 'you':
+                            return instructions.includes('are') ? 'I' : 'me';
+                        case 'are':
+                            return 'am';
+                        case 'am':
+                            return 'are';
+                        case 'your':
+                            return 'my';
+                        case 'my':
+                            return 'your';
+                        default:
+                            return w;
+                    }
+                });
+                const instr = words.join(' ');
+
+                switch (keyword.toLowerCase()) {
+                    case 'fuck':
+                        feedback('Fuck ' + instr + ', too.');
+                        break;
+                    case 'oh':
+                        feedback('Uhuh.');
+                        break;
+                    case 'run':
+                        feedback("Can't run " + instr);
+                        break;
+                    case 'ok':
+                        feedback('Ok.');
+                        break;
+                    case 'what':
+                        feedback('This ' + instr);
+                        break;
+                    case "what's":
+                        feedback('This is ' + instr);
+                        break;
+                    case 'that':
+                    case "that's":
+                        feedback('It ' + instr);
+                        break;
+                    case 'is':
+                        feedback("I can't tell you that.");
+                        break;
+                    case 'this':
+                        feedback('It ' + instr);
+                        break;
+                    case 'how':
+                        feedback("It's easy.");
+                        break;
+                    case 'why':
+                        feedback('Because.');
+                        break;
+                    case 'try':
+                        feedback('Trying...');
+                        break;
+                    case 'hello':
+                    case 'hi':
+                        feedback('Hello.');
+                        break;
+                    case 'gui':
+                        feedback('Module not installed.');
+                        break;
+                    case 'monospace':
+                        feedback('Starting up...');
+                        break;
+                    case 'get':
+                        feedback('Getting ' + instr + '...');
+                        break;
+                    case 'put':
+                        feedback('Put ' + instr + ' where?');
+                        break;
+                    case 'kill':
+                        feedback('Dead.');
+                        break;
+                    case 'yes':
+                        feedback('Oh yeah?');
+                        break;
+                    case 'no':
+                        feedback('Are you sure?');
+                        break;
+                    case "you're":
+                        feedback('I am ' + instr);
+                        break;
+                    case 'you':
+                        feedback('I ' + instr);
+                        break;
+                    case 'who':
+                        if (
+                            instructions.includes('are') &&
+                            instructions.includes('you')
+                        )
+                            feedback('I am your friendly computer.');
+                        else if (
+                            instructions.includes('am') &&
+                            instructions.includes('i')
+                        )
+                            feedback("You're the man.");
+                        else feedback(juggle(instr));
+                        break;
+                    case "i'm":
+                        feedback('You are ' + instr);
+                        break;
+                    case 'i':
+                        feedback('You ' + instr);
+                        break;
+                    default:
+                        feedback(
+                            Math.random() * maxInteger >
+                                Math.random() * maxInteger
+                                ? Math.random() * maxInteger >
+                                  Math.random() * maxInteger
+                                    ? 'What do you mean, ' + keyword + '?'
+                                    : "Can't " + keyword + '.'
+                                : Math.random() * maxInteger >
+                                  Math.random() * maxInteger
+                                ? keyword + ' what?'
+                                : "I can't do that."
+                        );
+                }
+            }
+
+            function feedback(text) {
+                if (text) appendRaw(text);
+                appendPrompt();
+                screen.scrollTop = screen.scrollHeight;
+            }
+
+            // ------------------ Initialize ------------------
+            startupSequence();
+        </script>
+    </body>
+</html>
