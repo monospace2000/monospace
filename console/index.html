@@ -1,46 +1,129 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>m o n o s p a c e : console</title>
+        <meta charset="UTF-8" />
+        <title>monospace : console intro</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <map name="intro">
-            <area
-                shape="RECT"
-                coords="8,39,159,66"
-                href="faq.html"
-                alt=""
-                target="_new" />
-            <area
-                shape="RECT"
-                coords="8,77,266,102"
-                href="comments.html"
-                alt=""
-                target="_new" />
-            <area
-                shape="RECT"
-                coords="8,114,169,137"
-                href="http://www.macromedia.com/shockwave/download/"
-                alt=""
-                target="_new" />
-            <area
-                shape="RECT"
-                coords="8,149,106,174"
-                href="console.html"
-                alt="" />
-            <area
-                shape="RECT"
-                coords="10,237,151,262"
-                href="/ "
-                alt=""
-                onClick="alert('Chicken!')" />
-        </map>
+        <style>
+            body {
+                margin: 0;
+                background: black;
+                color: #00ff00;
+                font-family: 'Courier New', monospace;
+                padding: 24px;
+                font-size: 22px;
+                line-height: 1.4;
+                white-space: pre-wrap;
+            }
+
+            a {
+                color: #00ff00;
+                text-decoration: none;
+                outline: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .hidden {
+                opacity: 0;
+            }
+        </style>
     </head>
 
-    <body bgcolor="black">
-        <img
-            src="writeon.gif"
-            width="280"
-            height="280"
-            border="0"
-            usemap="#intro" />
+    <body>
+        <div id="writeon"></div>
+
+        <script>
+            const lines = [
+                'Instructions:',
+                '',
+                'Read the FAQ.',
+                'Read the user comments.',
+                'Get Shockwave.',
+                'Boot up.',
+                '',
+                'Alternatively:',
+                '',
+                'Chicken out.',
+            ];
+
+            // Link mapping based on your instructions
+            const linkMap = {
+                'Read the FAQ.': 'faq.html',
+                'Read the user comments.': 'comments.html',
+                'Get Shockwave.': 'alert:shockwave',
+                'Boot up.': 'console.html',
+                'Chicken out.': 'alert:chicken',
+            };
+
+            const container = document.getElementById('writeon');
+
+            // Build DOM with hidden spans so they can fade in one by one
+            let spanList = [];
+
+            lines.forEach((line, index) => {
+                // If the line should be a link
+                if (linkMap[line]) {
+                    const link = document.createElement('a');
+
+                    // Special behaviors
+                    if (linkMap[line] === 'alert:shockwave') {
+                        link.href = 'javascript:void(0)';
+                        link.onclick = () => {
+                            alert('Macromedia Shockwave download link');
+                        };
+                    } else if (linkMap[line] === 'alert:chicken') {
+                        link.href = 'javascript:void(0)';
+                        link.onclick = () => {
+                            alert('Chicken!');
+                            window.location = 'https://monospace.com';
+                        };
+                    } else {
+                        link.href = linkMap[line];
+                    }
+
+                    link.style.display = 'inline-block';
+
+                    // Create spans for each character
+                    for (let char of line) {
+                        const span = document.createElement('span');
+                        span.textContent = char;
+                        span.classList.add('hidden');
+                        link.appendChild(span);
+                        spanList.push(span);
+                    }
+
+                    container.appendChild(link);
+                } else {
+                    // Normal line
+                    for (let char of line) {
+                        const span = document.createElement('span');
+                        span.textContent = char;
+                        span.classList.add('hidden');
+                        container.appendChild(span);
+                        spanList.push(span);
+                    }
+                }
+
+                // Add line break
+                container.appendChild(document.createElement('br'));
+            });
+
+            // ---- Animation ----
+            let i = 0;
+            const speed = 65; // adjust here for slower/faster write-on
+
+            function animate() {
+                if (i < spanList.length) {
+                    spanList[i].style.opacity = 1;
+                    i++;
+                    setTimeout(animate, speed);
+                }
+            }
+
+            animate();
+        </script>
     </body>
 </html>

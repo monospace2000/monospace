@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 <style>
+/* Base styles */
 html, body {
     margin: 0;
     font-family: monospace;
@@ -23,39 +23,33 @@ body::before {
     inset: 0;
     z-index: 0;
     background: url('/assets/images/logo_xl_transp.png') 10% 10vh no-repeat,
-        radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 33vw),
-        #000;
+                radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 33vw),
+                #000;
     background-size: 70%, 100%, 100%;
-    background-repeat: no-repeat;
 }
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-.section-wrap {
-    width: 750px;
-    min-width: 250px;
-    backdrop-filter: blur(5px);
-    position: fixed;
-    left: 140px;
-    top: 50%;
-    transform: translateY(100%);
-    opacity: 0;
-    z-index: 1;
-    transition: transform 0.8s ease, opacity 0.8s ease;
-}
-.section-wrap.active {
-    transform: translateY(0);
-    opacity: 1;
-}
+
 .section {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start; /* moved left of center */
+    align-items: center;
+    padding-left: 10vw; /* left offset */
+    flex: 2;
+}
+
+/* panel panels */
+.panel-wrap {
+    width: 30vw;
+    backdrop-filter: blur(5px);
+    border-radius: 16px;
+}
+.panel {
     box-shadow: 10px 10px 10px rgba(0,0,0,0.3),
-        -10px 10px 10px rgba(0,0,0,0.3),
-        inset 5px 5px 10px rgba(0,0,0,0.2),
-        inset -5px -5px 10px rgba(0,0,0,0.2);
-    position: relative;
+                -10px 10px 10px rgba(0,0,0,0.3),
+                inset 5px 5px 10px rgba(0,0,0,0.2),
+                inset -5px -5px 10px rgba(0,0,0,0.2);
     background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0) 40px, rgba(255,255,255,0) 90%),
                 linear-gradient(to top, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0) 20px, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0) 100%),
                 rgba(0,0,0,0);
@@ -64,31 +58,40 @@ body::before {
     color: white;
     cursor: pointer;
 }
-.section-top {
+.panel-clear{
+    box-shadow: none;
+    background: none;
+    border: none;
+    cursor: default;
+}
+.panel-top {
     height: 20px;
     margin: 4px 4px 0 4px;
     background: linear-gradient(rgba(255,255,255,0.4) 0px, rgba(255,255,255,0) 20px);
     border-radius: 10px 10px 0 0;
 }
-.section-header {
-    font-family: 'Oswald';
-    font-size: 26px;
+.panel-header {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.8rem, 2.2vw, 2.2rem);
     font-weight: 500;
     margin: -16px 20px 0px 20px;
 }
-.section-content {
-    font-family: 'Roboto';
-    font-size: 19px;
-    line-height: 26px;
+.panel-content {
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    line-height: 1.4;
     font-weight: 300;
     margin: 10px 20px 20px;
 }
+
+/* Spotlight */
 .spotlight {
     position: fixed;
-    width: 320px;
-    height: 720px;
-    right: 160px;
-    bottom: 80px;
+    width: 20vw;
+    height: auto;
+    aspect-ratio: 320/720;
+    right: 20%;
+    bottom: 10%;
     pointer-events: none;
     z-index: 0;
 }
@@ -99,26 +102,51 @@ body::before {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom;
-    transition: background-image 0.5s ease-in-out;
 }
+#spotlight-base{ background-image: url(assets/images/spotlight/base.png) }
+
+/* Footer */
 #copyright {
     font-size: 12px;
     width: 100%;
     text-align: center;
     position: fixed;
     bottom: 20px;
+    color: gray;
 }
-@media (max-width: 768px) {
+
+/* Mobile responsive */
+@media (max-width: 500px) {
+    body::before {
+        background: url('/assets/images/logo_xl_transp.png') center 5vh no-repeat,
+                    radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 60vw),
+                    #000;
+        background-size: 90%, 100%, 100%;
+    }
+    .section-header { font-size: 20px; }
+    .section-content { font-size: 14px; }
     .spotlight {
-        right: 50%;
-        bottom: 20px;
-        transform: translateX(50%);
-        width: 200px;
-        height: 450px;
+        left: 50%;
+        top: 35%;
+        transform: translate(-50%, -40%);
+        width: min(200px, 50vw);
+        height: auto;
+        aspect-ratio: 320/720;
+        right: auto;
+        bottom: auto;
+        max-height: calc(100vh - 35vh - 30%);
+        max-width: calc((100vh - 35vh - 30%) * 320 / 720);
     }
     .section-wrap {
-        width: auto;
-        left: 50px;
+        width: calc(100% - 40px);
+        min-width: auto;
+        left: 20px;
+        top: unset;
+        bottom: 5%;
+    }
+    #copyright {
+        font-size: 10px;
+        bottom: 10px;
     }
 }
 </style>
@@ -126,237 +154,270 @@ body::before {
 <body>
 
 <div class="spotlight">
-    <div class="item" id="spotlight-current"></div>
     <div class="item" id="spotlight-base"></div>
-    <div class="item" id="spotlight-next"></div>
+    <div class="item" id="spotlight-item"></div>
 </div>
 
-
-<div class="container">
-
-    <!-- Panels -->
-    <div class="section-wrap">
-        <div class="section" id="welcome">
-            <div class="section-top"></div>
-            <div class="section-header">Welcome</div>
-            <div class="section-content">
-                Scroll or swipe to navigate through the panels.<br>Each section shows a different aspect of my work. Enjoy.
+<div class="section">
+    <div class="panel-wrap" id="welcome" data-spotlight="welcome">
+        <div class="panel panel-clear">
+            <div class="_panel-top"></div>
+            <div class="_panel-header">Welcome!</div>
+            <div class="_panel-content">
+                <br><br>Scroll or swipe up and down to navigate this website. Each section shows a different aspect of my work. Click a panel to explore further.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="art" onclick="document.location.href='art'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | art</div>
-            <div class="section-content">
-                I’m a painter and illustrator working in gouache, casein, acrylic, and pen and ink. I explore mood, light, and structure through landscapes, cityscapes, and nature studies. My works are available for purchase, and I welcome commissions.
+</div>
+<div class="section">
+    <div class="panel-wrap" id="art" data-spotlight="art">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">monospace ART</div>
+            <div class="panel-content">
+                I'm a painter and illustrator working in gouache, casein, acrylic, and pen and ink. I explore mood, light, and structure through landscapes, cityscapes, and nature studies. My works are available for purchase, and I welcome commissions.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="interactive" onclick="document.location.href='https://monospace.com/hens/portfolio/wordpress/portfolio/publishers-clearing-house/monthly-facebook-mini-games/'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | interactive</div>
-            <div class="section-content">
+</div>
+<div class="section">
+    <div class="panel-wrap" id="food" data-spotlight="food">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">monospace FOOD</div>
+            <div class="panel-content">
+                A visual and personal exploration of meals I've cooked, enjoyed, and photographed. This panel is a documentation of flavors, presentations, and culinary moments, shared to inspire and celebrate the experience of food.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="panel-wrap" id="interactive" data-spotlight="interactive">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">monospace INTERACTIVE</div>
+            <div class="panel-content">
                 With decades of hands-on experience, I create interactive experiences that are both engaging and memorable. From web-based mini-games to immersive multimedia projects, my portfolio showcases a wide range of creative coding and design skills.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="color" onclick="document.location.href='color'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | color</div>
-            <div class="section-content">
-                I specialize in restoring and colorizing vintage black-and-white photographs, paying close attention to historical accuracy and visual detail. Each piece is carefully crafted to bring old images vividly back to life.
+</div>
+<div class="section">
+    <div class="panel-wrap" id="console" data-spotlight="console">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">THE MONOSPACE CONSOLE</div>
+            <div class="panel-content">
+                The original monospace console, which started this website. A Shockwave art project from 1998, revived in modern Javascript. A chatty command-line console you can click, type, and poke at.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="music" onclick="document.location.href='music'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | music</div>
-            <div class="section-content">
-               I play drums and guitar and write original music. Here you can explore my recordings, live videos, and songs — all gathered in one place to showcase my musical work.
+</div>
+<div class="section">
+    <div class="panel-wrap" id="digits" data-spotlight="digits">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">DIGITAL SEX LIFE</div>
+            <div class="panel-content">
+                An early interactive artwork from 1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten with the aid of AI.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="food" onclick="document.location.href='food'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | food</div>
-            <div class="section-content">
-                A visual and personal exploration of meals I’ve cooked, enjoyed, and photographed. This section is a documentation of flavors, presentations, and culinary moments, shared to inspire and celebrate the experience of food.
+</div>
+<div class="section">
+    <div class="panel-wrap" id="color" data-spotlight="color">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">monospace COLOR</div>
+            <div class="panel-content">
+                I restore and colorize vintage black-and-white photographs, paying close attention to historical accuracy and visual detail. Each piece is carefully crafted to bring old images vividly back to life.
             </div>
         </div>
     </div>
-
-    <div class="section-wrap">
-        <div class="section" id="portfolio" onclick="document.location.href='hens/portfolio'">
-            <div class="section-top"></div>
-            <div class="section-header">monospace | portfolio</div>
-            <div class="section-content">
+</div>
+<div class="section">
+    <div class="panel-wrap" id="music" data-spotlight="music">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">monospace MUSIC</div>
+            <div class="panel-content">
+                I play drums and guitar and write original music. Here you can explore my recordings, live videos, and songs — all gathered in one place to showcase my musical work.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="panel-wrap" id="portfolio" data-spotlight="portfolio">
+        <div class="panel">
+            <div class="panel-top"></div>
+            <div class="panel-header">PORTFOLIO</div>
+            <div class="panel-content">
                 A curated selection of my professional work. Browse my resume, portfolio, and key projects across art, interactive media, and more.
             </div>
         </div>
     </div>
-
 </div>
 
 <div id="copyright">
-    Copyright &copy; 2025 monospace. All rights reserved.
+    Copyright &copy; 1998&mdash;2025 monospace. You are visitor number one.
 </div>
 
-
-
 <script>
-const spotlightImages = {
-    base: 'assets/images/spotlight/base.png',
-    welcome: 'assets/images/spotlight/hand.png',
-    art: 'assets/images/spotlight/easel.png',
-    interactive: 'assets/images/spotlight/controller.png',
-    color: 'assets/images/spotlight/paintbucket.png',
-    music: 'assets/images/spotlight/guitar.png',
-    food: 'assets/images/spotlight/tocque.png',
-    portfolio: 'assets/images/spotlight/briefcase.png'
+// Sections spotlight setup
+const spotlight = document.getElementById('spotlight-item');
+const sectionsObject = {
+    welcome: { isActive: false, spotlightImage: 'assets/images/spotlight/hand.png', panel: document.getElementById('welcome'), url: null },
+    art: { isActive: false, spotlightImage: 'assets/images/spotlight/easel.png', panel: document.getElementById('art'), url: 'art' },
+    food: { isActive: false, spotlightImage: 'assets/images/spotlight/tocque.png', panel: document.getElementById('food'), url: 'food' },
+    interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/portfolio/wordpress/portfolio/publishers-clearing-house/monthly-facebook-mini-games/' },
+    console: { isActive: false, spotlightImage: 'assets/images/spotlight/console.png', panel: document.getElementById('console'), url: 'console' },
+    digits: { isActive: false, spotlightImage: 'assets/images/spotlight/digits.png', panel: document.getElementById('digits'), url: 'https://www.digitalsexlife.com' },
+    color: { isActive: false, spotlightImage: 'assets/images/spotlight/paintbucket.png', panel: document.getElementById('color'), url: 'color' },
+    music: { isActive: false, spotlightImage: 'assets/images/spotlight/guitar.png', panel: document.getElementById('music'), url: 'music' },
+    portfolio: { isActive: false, spotlightImage: 'assets/images/spotlight/briefcase.png', panel: document.getElementById('portfolio'), url: 'hens/portfolio' }
 };
 
-// Preload images
-Object.values(spotlightImages).forEach(src => { const img = new Image(); img.src = src; });
-
-const panels = Array.from(document.querySelectorAll('.section-wrap'));
-const spotlightCurrent = document.getElementById('spotlight-current');
-const spotlightBase = document.getElementById('spotlight-base');
-const spotlightNext = document.getElementById('spotlight-next');
-
-let currentIndex = 0;
-let isAnimating = false;
-const defaultTop = 220;
-
-// Initialize panels
-panels.forEach((panel, i) => {
-    panel.style.position = 'fixed';
-    panel.style.left = '140px';
-    panel.style.top = i === 0 ? `${defaultTop}px` : '100%';
-    panel.style.opacity = i === 0 ? '1' : '0';
-    panel.style.zIndex = i === 0 ? '2' : '1';
+// preload images
+Object.values(sectionsObject).forEach(panel => {
+    const img = new Image();
+    img.src = panel.spotlightImage;
 });
 
-// Initialize spotlight layers
-spotlightCurrent.style.backgroundImage = `url(${spotlightImages.welcome})`;
-spotlightCurrent.style.opacity = 1;
-spotlightBase.style.opacity = 0;
-spotlightNext.style.opacity = 0;
-
-// Smoother cubic easing
-function easeInOutCubic(t) {
-    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+function setActiveSection(name) {
+    if (!sectionsObject[name]) return;
+    Object.values(sectionsObject).forEach(sec => sec.isActive = false);
+    sectionsObject[name].isActive = true;
 }
 
-function slidePanel(nextIndex, direction='down') {
-    if(isAnimating || nextIndex === currentIndex) return;
-    isAnimating = true;
-
-    const outgoing = panels[currentIndex];
-    const incoming = panels[nextIndex];
-    const offscreenDistance = window.innerHeight;
-
-    // Incoming panel start
-    incoming.style.top = direction==='down' ? `${defaultTop + offscreenDistance}px` : `${defaultTop - offscreenDistance}px`;
-    incoming.style.opacity = 0;
-    incoming.style.zIndex = 3;
-
-    const nextId = panels[nextIndex].querySelector('.section').id;
-    spotlightNext.style.backgroundImage = `url(${spotlightImages[nextId] || spotlightImages.welcome})`;
-    spotlightNext.style.opacity = 0;
-    spotlightBase.style.backgroundImage = `url(${spotlightImages.base})`;
-    spotlightBase.style.opacity = 0;
-
-    const startTime = performance.now();
-    const duration = 1200;
-
-    function animate(time) {
-        const t = Math.min((time - startTime)/duration, 1);
-        const eased = easeInOutCubic(t);
-
-        // Panels slide
-        outgoing.style.top = `${defaultTop + (direction==='down'? -1:1) * eased * offscreenDistance}px`;
-        outgoing.style.opacity = 1 - Math.pow(eased, 0.6);
-        incoming.style.top = `${defaultTop + (direction==='down'? 1:-1) * (1-eased) * offscreenDistance}px`;
-        incoming.style.opacity = Math.pow(eased, 0.6);
-
-        // Spotlight fade: current → base → next
-        if(eased < 0.5){
-            const p = eased * 2; // 0→1
-            spotlightCurrent.style.opacity = 1 - p;
-            spotlightBase.style.opacity = p;
-            spotlightNext.style.opacity = 0;
-        } else {
-            const p = (eased - 0.5) * 2; // 0→1
-            // Only swap next image when base is fully opaque
-            if(spotlightCurrent.style.opacity === '0' && spotlightBase.style.opacity === '1'){
-                // safe to swap: ensure next image source is already set
-            }
-            spotlightCurrent.style.opacity = 0;
-            spotlightBase.style.opacity = 1 - p;
-            spotlightNext.style.opacity = p;
-        }
-
-        if(t < 1){
-            requestAnimationFrame(animate);
-        } else {
-            // finalize positions
-            outgoing.style.top = direction==='down'? `${defaultTop - offscreenDistance}px` : `${defaultTop + offscreenDistance}px`;
-            outgoing.style.opacity = 0;
-            incoming.style.top = `${defaultTop}px`;
-            incoming.style.opacity = 1;
-            outgoing.style.zIndex = 1;
-            incoming.style.zIndex = 2;
-
-            // Reset spotlight
-            spotlightCurrent.style.backgroundImage = spotlightNext.style.backgroundImage;
-            spotlightCurrent.style.opacity = 1;
-            spotlightBase.style.opacity = 0;
-            spotlightNext.style.opacity = 0;
-
-            currentIndex = nextIndex;
-            isAnimating = false;
-        }
+function getActiveSection() {
+    for (const [name, sectionObject] of Object.entries(sectionsObject)) {
+        if (sectionObject.isActive) return { name, panel: sectionObject };
     }
-
-    requestAnimationFrame(animate);
+    return null;
 }
 
-// Navigation
-function nextPanel(){ slidePanel((currentIndex+1)%panels.length,'down'); }
-function prevPanel(){ slidePanel((currentIndex-1+panels.length)%panels.length,'up'); }
+function showOnlyActivePanel() {
+    Object.values(sectionsObject).forEach(section => {
+        section.panel.style.display = section.isActive ? 'block' : 'none';
+    });
+}
 
-// Wheel / trackpad
-window.addEventListener('wheel', e=>{
-    if(isAnimating || Math.abs(e.deltaY)<25) return;
-    e.deltaY>0?nextPanel():prevPanel();
-});
+// Initialize with hand
+setActiveSection('welcome');
+spotlight.style.backgroundImage = `url(${sectionsObject['welcome'].spotlightImage})`;
 
-// Mobile swipe
-let touchStartY = null;
-window.addEventListener('touchstart', e=>{ touchStartY=e.touches[0].clientY; });
-window.addEventListener('touchend', e=>{
-    if(touchStartY===null || isAnimating) return;
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    if(dy>50) nextPanel();
-    else if(dy<-50) prevPanel();
-    touchStartY = null;
-});
+// Expose for other scripts
+window.getActiveSection = getActiveSection;
+window.setActiveSection = setActiveSection;
 </script>
 
+<script>
+/* --------------------------------------------------------- BASIC SETUP --------------------------------------------------------- */
+const sections = Array.from(document.querySelectorAll('.section'));
+const count = sections.length;
+let vh = window.innerHeight;
+let y = 0;
+let dragging = false;
+let lastY = 0;
+let lastTime = 0;
+let velocity = 0;
+const friction = 0.92;
 
+window.addEventListener("resize", () => { vh = window.innerHeight; positionSections(); });
 
+let lastOpacity = 1;
 
+function getCurrentSectionIndex() {
+    let index = Math.round(-y / vh);
+    index = ((index % count) + count) % count;
+    return index;
+}
 
+function updateSpotlight() {
+    let rawIndex = -y / vh;
+    let nearest = Math.round(rawIndex);
+    let dist = Math.abs(rawIndex - nearest);
+    let opacity = 1 - dist * 2;
+    opacity = Math.max(0, Math.min(1, opacity));
+    spotlight.style.opacity = opacity;
+
+    if (opacity > lastOpacity && lastOpacity < 0.05) {
+        let idx = getCurrentSectionIndex();
+        let sectionId = sections[idx].querySelector('.panel-wrap').dataset.spotlight;
+        spotlight.style.backgroundImage = `url(${sectionsObject[sectionId].spotlightImage})`;
+        setActiveSection(sectionId);
+    }
+    lastOpacity = opacity;
+}
+
+/* --------------------------------------------------------- POSITIONING --------------------------------------------------------- */
+function positionSections() {
+    const total = count * vh;
+    sections.forEach((s, i) => {
+        let pos = i * vh + y;
+        while (pos < -vh) pos += total;
+        while (pos > total - vh) pos -= total;
+        s.style.top = pos + "px";
+    });
+    updateSpotlight();
+}
+
+/* --------------------------------------------------------- DRAGGING / TOUCH --------------------------------------------------------- */
+function startDrag(e) {
+    dragging = true;
+    velocity = 0;
+    lastY = e.touches ? e.touches[0].clientY : e.clientY;
+    lastTime = performance.now();
+}
+function moveDrag(e) {
+    if (!dragging) return;
+    const nowY = e.touches ? e.touches[0].clientY : e.clientY;
+    const dy = nowY - lastY;
+    y += dy;
+    const now = performance.now();
+    const dt = now - lastTime || 16;
+    velocity = dy / dt * 16.66;
+    lastY = nowY;
+    lastTime = now;
+    positionSections();
+}
+function endDrag() { dragging = false; }
+
+/* --------------------------------------------------------- WHEEL / TRACKPAD --------------------------------------------------------- */
+document.addEventListener("wheel", e => {
+    e.preventDefault();
+    const delta = -e.deltaY;
+    y += delta;
+    velocity = delta;
+    positionSections();
+}, { passive:false });
+
+/* --------------------------------------------------------- MOMENTUM LOOP --------------------------------------------------------- */
+function animate() {
+    if (!dragging) {
+        if (Math.abs(velocity) > 0.01) {
+            y += velocity;
+            velocity *= friction;
+            positionSections();
+        }
+    }
+    requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+/* --------------------------------------------------------- EVENT HOOKS --------------------------------------------------------- */
+document.addEventListener("mousedown", startDrag);
+document.addEventListener("mousemove", moveDrag);
+document.addEventListener("mouseup", endDrag);
+document.addEventListener("mouseleave", endDrag);
+document.addEventListener("touchstart", startDrag, { passive:false });
+document.addEventListener("touchmove", moveDrag, { passive:false });
+document.addEventListener("touchend", endDrag);
+document.addEventListener("touchcancel", endDrag);
+
+/* Initial paint */
+positionSections();
+</script>
 
 </body>
 </html>
