@@ -1,0 +1,32 @@
+SetEnv PHPRC /home/customer/www/monospace.com/public_html/php.ini
+ErrorDocument 404 /error404.php
+
+RewriteEngine On
+
+# --- Redirects for migrated sub-sites ---
+
+# Sightings
+
+Redirect 301 /art/sightings https://sightings.monospace.com/
+RedirectMatch 301 ^/art/sightings/(.\*)$ https://sightings.monospace.com/$1
+
+# Food
+
+Redirect 301 /food https://food.monospace.com/
+RedirectMatch 301 ^/food/(.\*)$ https://food.monospace.com/$1
+
+# Color
+
+Redirect 301 /color https://color.monospace.com/
+RedirectMatch 301 ^/color/(.\*)$ https://color.monospace.com/$1
+
+# Art
+
+Redirect 301 /art https://art.monospace.com/
+Redirect 301 /art/blog https://art.monospace.com/
+RedirectMatch 301 ^/art/blog/(.\*)$ https://art.monospace.com/$1
+
+# Redirect moved folders
+
+RedirectMatch 301 ^/libraries/?(._)$ /hens/portfolio/sources/pch/libraries/$1
+RedirectMatch 301 ^/app_iw_game_assets/?(._)$ /hens/portfolio/sources/pch/app_iw_game_assets/$1

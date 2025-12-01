@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Interactive Drumset Demo (2001) | monospace.com</title>
+
+<meta name="title" content="Interactive Drumset Demo (2001) | monospace.com">
+<meta name="description" content="A restored interactive Flash drumset demo from 2001, preserved for modern browsers using the Ruffle emulator. Part of the monospace.com media archive.">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://www.monospace.com/hens/portfolio/sources/flash/drumset.html">
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.monospace.com/hens/portfolio/sources/flash/drumset.html">
+<meta property="og:title" content="Interactive Drumset Demo (2001) | monospace.com">
+<meta property="og:description" content="A restored interactive Flash drumset demo from 2001, preserved for modern browsers using the Ruffle emulator. Part of the monospace.com media archive.">
+<meta property="og:image" content="https://www.monospace.com/hens/portfolio/sources/flash/preview.png">
+
+<!-- Twitter / X -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://www.monospace.com/hens/portfolio/sources/flash/drumset.html">
+<meta property="twitter:title" content="Interactive Drumset Demo (2001) | monospace.com">
+<meta property="twitter:description" content="A restored interactive Flash drumset demo from 2001, preserved for modern browsers using the Ruffle emulator. Part of the monospace.com media archive.">
+<meta property="twitter:image" content="https://www.monospace.com/hens/portfolio/sources/flash/preview.png">
+
+<!-- Additional SEO -->
+<meta name="keywords" content="Flash restoration, Ruffle emulator, interactive media, digital archives, early web multimedia, SWF preservation, portfolio, monospace.com">
+<meta name="author" content="Hens Breet">
+
+
+        <style>
+            body {
+                background: black;
+                color: white;
+                overflow: hidden;
+            }
+            #container {
+                position: absolute;
+                width: 99vw;
+                height: 99vh;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+
+        <script>
+            window.RufflePlayer = window.RufflePlayer || {};
+            window.addEventListener('load', (event) => {
+                const ruffle = window.RufflePlayer.newest();
+                const player = ruffle.createPlayer();
+                const container = document.getElementById('container');
+                container.appendChild(player);
+
+                player.style.width = '100%';
+                player.style.height = '100%';
+
+                player.ruffle().load({
+                    url: 'drumset.swf',
+                    autoplay: 'on',
+                    splashScreen: false,
+                    unmuteOverlay: 'hidden'
+                });
+            });
+        </script>
+        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    </body>
+</html>

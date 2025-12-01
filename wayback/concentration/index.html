@@ -1,0 +1,336 @@
+<!-- 
+
+
+                  Copyright (c)2000 monospace. All Rights Reserved.
+ ______________________________________________________________________________
+|                                                                              |
+|                                  WARNING!                                    |
+|                                                                              |
+|                                                                              |
+|        Use of this code without WRITTEN consent from the publisher is        |
+|                   a violation of applicable Copyright Laws!                  |
+|                                                                              |
+|        Please contact scripts@monospace.com for licensing information.       |
+|                                                                              |
+|                                                                              |
+|______________________________________________________________________________|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->
+<html>
+<head>
+	<title>Concentration</title>
+
+<script>
+<!--
+// Copyright (c)2000 monospace. All Rights Reserved.
+
+reminderID = setTimeout("reminder(15)", (15*60*1000));
+
+function preload(){
+	loaded  = 0;
+	path = "images/";
+	pixel0 = new Image();
+//	pixel0.src = path + "square.gif";
+	pixel0.src = path + "pixel0.gif";
+	pixel = new Image();
+	pixel.src = path + "pixel.gif";
+	cards = new Array();
+	for (i=1; i<=20; i++){
+		cards[i] = new Image(96,96);
+		cards[i].src = path + 'food/' + pad(i,2) + '.jpg';
+		cards[i].onLoad = loaded++;
+	}
+	if (loaded==cards.length-1) init();
+}
+
+function init(){
+	playing = true; // playing or not
+	card = 0; // number of cards flipped
+	round = 1; // number of rounds in current game
+	compare = new Array(1); // for comparing two flipped cards
+	match = false; // matching cards flag
+	found = 0; // number of matching cards found
+	flipped = new Array(20); // flags for cards already flipped
+	for (var i=0; i<20; i++){
+		flipped[i] = false;
+	}
+	
+	randomizeCards(); // shuffle the cards
+	
+	// draw the top frame:
+	var content = '<html>';
+	content += '<body bgcolor=006699 text=white link=black vlink=black alink=black><center>';
+	content += table(5,4,2,0,0);
+	content += '</center></body></html>';
+
+	game.document.open();
+	game.document.write(content);
+	game.document.close();
+
+	// draw bottom frame:
+	var content = '<html><body bgcolor=006699 text=white link=black vlink=black alink=black><center>';
+	content += '<font face="arial,helvetica" size=1>Match all images in as few rounds as possible. Click on a square above to begin.</font>';
+	content += '</center></body></html>';
+	
+	message.document.open();
+	message.document.write(content);
+	message.document.close();
+}
+
+
+function turnCard(number){
+
+	if (playing){
+		if (!flipped[number]){
+			
+			displayScore("Round " + round); // display current round
+			
+			if (card==2){ // two cards flipped, so reset:
+				card = 0;
+				if (match){
+					match = false;	
+				}else{
+					game.document.images[compare[0]].src = pixel0.src;
+					game.document.images[compare[1]].src = pixel0.src;
+				}
+			}
+			
+			compare[card] = number; // put flipped card in buffer
+			
+			if ((card==1) && (compare[0]== compare[1])){ // same card clicked twice (thanks Patrick)	
+					alert("Please pick a second card.");
+			}else{
+				
+				game.document.images[number].src = cards[grid[number+1]].src; // update display
+			
+				if (card==1){ // we have two cards
+					round++; // this round is over
+					
+					if (grid[compare[0]+1] == grid[compare[1]+1]){	// we have a match
+						
+						match = true;
+						found++;
+					
+						flipped[compare[0]] = true;
+						flipped[compare[1]] = true;	
+						
+						if (found == 10){ // found them all, game over:
+							playing = false;
+							var message = "Game finished in " + round + " rounds: " + rateScore(round);
+							message += '<br><br><a href="javascript:parent.newGame()"><img src="images/newgame.gif" width=94 height=32 border=0></a>';
+							displayScore(message);
+						}else{	
+							displayScore("Very good!");										
+						}
+						
+					}else{
+						displayScore("Try again.");
+					}
+				}
+				card++;
+			}		
+		
+		}else{ // card was already flipped
+			alert("That card has already been played.");		
+		}
+		
+	}else{ // no game in progress
+		alert('Please start a new game.');
+	}
+	
+}
+
+function newGame(){
+	// confirm new game
+	if (playing){
+		if (confirm("Really discard the current game?")) {preload()};
+	}else{
+		preload();
+	}
+}
+
+function rateScore(s){
+	if (s<=20){
+		return "Genius!";
+	}else if (s>20 && s<=30){
+		return "You can do better...";
+	}else if (s>30){
+		return "Scatterbrain!";
+	}
+}
+
+function displayScore(msg){
+	var content = '<html><body bgcolor=006699 text=white marginheight=0 topmargin=0><center>';
+	content += '<font face="arial,helvetica">';
+	content += '<b>' + msg + '</b>';
+	content += '</font></center></body></html>';
+	
+	message.document.open();
+	message.document.write(content);
+	message.document.close();
+}
+
+function randomizeCards(){
+	var allImages = shuffle(20); // shuffle all images
+	var firstOrder = shuffle(10); // pick the first 10
+	var secondOrder = shuffle(10); // pick the next 10
+	var tmpGrid = new Array(); // temp grid
+	for (var i=1; i<=10; i++){
+		tmpGrid[i] = allImages[firstOrder[i]];
+		tmpGrid[i+10] = allImages[secondOrder[i]];
+	}
+	grid = new Array(); // final grid
+	for (var i=1; i<=20; i++){
+		grid[i] = tmpGrid[allImages[i]];
+	}
+}
+
+function shuffle(listLength){
+	var result = new Array(listLength); // the result
+	var temp = new Array(listLength); // flags for picked numbers
+	for (x=1; x<=listLength; x++){ // loop through the flags
+		temp[x] = false; // set flags to false
+	}	
+	for (x=1; x<=listLength; x++){ // loop through the final result
+		r = Math.ceil(Math.random()*listLength); // pick a number
+		if (!temp[r]){	// if this number is not yet picked
+			temp[r] = true;	// now it is
+			result[x] = r; // put it in the final result
+		}else{ // if this number was already picked
+			while (temp[r]){ // try again until we found one that's not yet picked
+				r = Math.ceil(Math.random()*listLength); // pick a new number
+			}
+			temp[r] = true; // now this number is picked too
+			result[x] = r; // put it in the final result
+		}
+	} // on to the next number
+	return result;
+}
+
+function pad(number, len){
+	// add leading zeroes
+	var numLen = number.toString().length;
+	var result = '';
+	for(n=0; n<len-numLen; n++){
+		result = '0' + result;
+	}
+	return result+number;
+}
+
+function imgTag(name, source, width, height, border){
+	// build an image tag
+	var tag = '<img name="' + name +'" src="' + source + '" width=' + width +  ' height=' + height + ' border=' + border + '>'
+	return tag
+	}
+
+function anchorTag(link, anchor, over, out){
+	// build an anchor tag
+	var tag = '<a href="' + link + '" onMouseOver="' + over + '" onMouseOut="' + out + '">'
+	tag += anchor + '</a>'
+	return tag
+	}
+
+function table(cols, rows, padding, spacing, border){
+	// construct a table with custom content
+	var index = 0
+	var code = '<table cellpadding=' + padding + ' cellspacing=' + spacing + ' border=' + border + '>'
+	for (var i=0; i<rows; i++){
+		code += '<tr>'
+		for (var j=0; j<cols; j++){
+			code += '<td align=center>'
+			code += anchorTag('javascript:parent.turnCard(' + index.toString() + ')', imgTag(index.toString(), pixel0.src, 96, 96, 0), '', '');
+			code += '</td>'
+			index++;
+			}
+		code += '</tr>'
+		}
+	code += '</table>'
+	return code
+	}
+
+function reminder(interval){
+	// interval is in minutes
+	alert("Hey, don't you have any WORK to do?");
+	reminderID = setTimeout("reminder(interval)", (interval*60*1000));	
+}
+
+function displayStatus(statusMessage){
+	// display window status
+	window.status = statusMessage;
+	return true;
+}
+
+//-->
+</script>
+
+</head>
+
+<frameset rows="430, *" border=0 frameborder=0 framespacing=0 onLoad="preload()">
+<frame name="game" src="blank.html" scrolling=auto noresize>
+<frame name="message" src="blank.html" scrolling=no noresize marginwidth=0 marginheight=0>
+</frameset><noframes></noframes>
+
+</html>

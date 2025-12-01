@@ -1,0 +1,115 @@
+<html>
+<head>
+	<title>slideshow</title>
+
+<script type="text/javascript">
+// Copyright (c)2001 monospace. Use only with this message intact.
+
+// -------------------------------- (User settings:)
+coverImage = ""; // starting image, not used in slideshow
+pathToImages = "http://www.monospace.com/slideshow/"; // directory and partial name of images, without any numbers
+fileType = ".jpg";               // part of the image name after any numbers
+numberOfImages = 153;              // number of images used slideshow
+// -------------------------------- (End of user settings)
+
+counter = 0;
+playing = false;
+function play(){ 
+	playing = true;
+	with(document.controls){
+		counter = (counter+1) % numberOfImages;
+		parent.document.slide.src = path.value + pad(counter+1) + extension.value;
+		timer = setTimeout("play()", speed.options[speed.selectedIndex].value * 1000);
+		message.value = "Playing";
+	}
+}
+
+function pause(){
+	clearTimeout(timer);
+	document.controls.message.value = "Paused";
+}
+
+function rewind(){
+	counter = 0;
+	if (playing) clearTimeout(timer);
+	document.slide.src = coverImage;
+	document.controls.message.value = "Stopped";
+}
+function pad(number, len){
+	number = number.toString();
+	while (number.length < len){
+		number = "0" + number;
+	}
+	return number;
+}
+function help(topic){
+	if (topic == "path"){
+		alert("Enter the full path to the images to be displayed, INCLUDING the first part of the image name.\nFor example: \"http://www.myServer.com/myFolder/myImage\"");
+	} else if (topic == "numberOfImages"){
+		alert("Enter the total number of images to be displayed.");	
+	} else if (topic == "padNumbers"){
+		alert("Are the images numbered with leading zeros? For example: \"myImage0001\"");	
+	} else if (topic == "padLength"){
+		alert("Enter the padding length. For example: \"0001\" would be 4");	
+	} else if (topic == "extension"){
+		alert("Enter the filetype INCLUDING the dot. For example: \".jpg\", \".gif\"");	
+	} else if (topic == "imgWidth"){
+		alert("Enter the width of the image in pixels.");	
+	} else if (topic == "imgHeight"){
+		alert("Enter the height of the image in pixels.");	
+	} else if (topic == "speed"){
+		alert("Select the update speed. Choose a lower tempo on slow connections.");	
+	}
+}
+</script>
+<style type=text/css>
+td {
+	font-family:arial, helvetica;
+	font-size: 10px;
+	color: gray;
+}
+input, select {
+	font-family:arial, helvetica;
+	font-size: 12px;
+	border-width:1;
+	border-color:gray;
+	background-color:black;
+	color:white;
+}
+</style>
+</head>
+<body bgcolor=black text=white>
+
+<table width="100%" height="80%"><tr><td valign=middle align=center>
+
+<form name="controls">
+<select name="speed">
+	<option value="10">Slowest
+	<option value="5">Slower
+	<option value="3" selected>Moderate
+	<option value="2">Faster
+	<option value="1">Fastest
+</select>
+<input type="button" value="Play" onClick="play()">
+<input type="button" value="Pause" onClick="pause()">
+<input type="button" value="Rewind" onClick="rewind()">
+<input type=text name="message" value="Stopped" onFocus="blur()" size=10 style="background-color:black; color:white; border-color:black; border-width:0px">
+
+<table>
+<tr><td align=right>Path to images:		</td><td>	<input type=text name="path" value="http://"><input type=button value=" ? " onClick="help('path')">			</td></tr>
+<tr><td align=right>Number of images:	</td><td>	<input type=text name="numberOfImages" value="" size=4><input type=button value=" ? " onClick="help('numberOfImages')">	</td></tr>
+<tr><td align=right>Pad numbers?		</td><td>	<input type=checkbox name="padNumbers" checked><input type=button value=" ? " onClick="help('padNumbers')">			</td></tr>
+<tr><td align=right>Pad length:			</td><td>	<input type=text name="padLength" value="" size=4><input type=button value=" ? " onClick="help('padLength')">		</td></tr>
+<tr><td align=right>File extension:		</td><td>	<input type=text name="extension" value=".jpg" size=4><input type=button value=" ? " onClick="help('extension')">	</td></tr>
+<tr><td align=right>Image width:		</td><td>	<input type=text name="imgWidth" value="" size=4><input type=button value=" ? " onClick="help('imgWidth')">		</td></tr>
+<tr><td align=right>Image height:		</td><td>	<input type=text name="imgHeight" value="" size=4><input type=button value=" ? " onClick="help('imgHeight')">		</td></tr>
+</table>
+	
+</form>
+
+<small>Copyright (c)2001 monospace. All rights reserved.</small>
+
+</td></tr></table>
+
+</body>
+</html>

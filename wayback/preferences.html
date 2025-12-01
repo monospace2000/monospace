@@ -1,0 +1,332 @@
+<html>
+    <head>
+        <title>m o n o s p a c e : preferences</title>
+        <script
+            type="text/javascript"
+            language="javascript"
+            src="monospace.js"></script>
+        <link rel="stylesheet" href="monospace.css" />
+
+        <script type="text/javascript" language="javascript">
+            if (ie || moz) {
+                style = "<style type='text/css'>";
+                if (mac && !moz)
+                    style +=
+                        'body{ background: url(images/glow.gif); background-attachment: fixed; background-repeat: no-repeat; background-color: 000000; }';
+                style +=
+                    'input{background: #000000; border: solid 1px #333333; 	font-family: ""Lucida Grande"", verdana, geneva, sans-serif;  color: white; font-size:11px; }';
+                style +=
+                    'select{background-color: black; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; font-size:11px; color: white}';
+                style +=
+                    'input.text{background-color: #ffffcc; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; color: black; font-size:11px; }';
+                style +=
+                    'textarea{background-color: #ffffcc; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; color: black; font-size:11px; }';
+                style += '</style>';
+                document.open();
+                document.write(style);
+                document.close();
+            }
+
+            function loadPrefs() {
+                savedPrefs = unescape(document.cookie);
+                if (savedPrefs.indexOf('prefs') != -1) {
+                    userPrefs = true;
+                    tmpArray = savedPrefs
+                        .substring(6, savedPrefs.length)
+                        .split('+');
+                    prefs = new Array();
+                    for (var i = 0; i < tmpArray.length; i++) {
+                        nameValuePair = tmpArray[i].split('=');
+                        prefs[nameValuePair[0]] = nameValuePair[1];
+                    }
+                } else userPrefs = false;
+            }
+
+            function setForm() {
+                if (userPrefs) {
+                    with (document.preferences) {
+                        visitor.value = prefs.name;
+                        email.value = prefs.email;
+                        selectOption(month.options, prefs.birthMonth);
+                        selectOption(day.options, prefs.birthDay);
+                        //if (prefs.linkOptions == "same") linkOpts[0].checked = true;
+                        //else linkOpts[1].checked = true;
+                    }
+                }
+            }
+
+            function selectOption(optionsArray, optionValue) {
+                for (var i = 0; i < optionsArray.length; i++) {
+                    if (optionsArray[i].value == optionValue)
+                        optionsArray[i].selected = true;
+                }
+            }
+
+            function getForm() {}
+
+            function savePrefs() {
+                expDate = new Date();
+                expDate = new Date(
+                    expDate.setFullYear(expDate.getFullYear() + 1)
+                );
+
+                prefs = new Array();
+                with (document.preferences) {
+                    prefs.name = visitor.value;
+                    prefs.email = email.value;
+                    prefs.birthMonth = month.options[month.selectedIndex].value;
+                    prefs.birthDay = day.options[day.selectedIndex].value;
+                    //prefs.linkOptions = (linkOpts[0].checked) ? linkOpts[0].value : linkOpts[1].value;
+                }
+
+                message =
+                    'The following information will be stored on this computer:\n\n';
+                message += 'Your name: ' + prefs.name + '\n';
+                message += 'Your email: ' + prefs.email + '\n';
+                message +=
+                    'Your birthday: ' +
+                    prefs.birthMonth +
+                    ' ' +
+                    prefs.birthDay +
+                    '\n';
+                //message += "External links: use " + prefs.linkOptions + " browser window\n";
+
+                if (confirm(message)) {
+                    var prefsString = '';
+                    for (var i in prefs) {
+                        prefsString += i + '=' + prefs[i] + '+';
+                    }
+                    document.cookie =
+                        'prefs=' +
+                        escape(prefsString) +
+                        '; expires=' +
+                        expDate.toUTCString();
+                    document.location = 'index.html';
+                }
+            }
+
+            function deleteCookie() {
+                expDate = new Date();
+                expDate = new Date(
+                    expDate.setFullYear(expDate.getFullYear() - 1)
+                );
+                document.cookie = "prefs=''; expires=" + expDate.toUTCString();
+                document.location = 'index.html';
+            }
+        </script>
+
+        <style type="text/css">
+            #alert {
+                color: red;
+            }
+        </style>
+    </head>
+
+    <body bgcolor="black" text="white" onLoad="loadPrefs(); setForm();">
+        <ul>
+            <table width="760">
+                <tr valign="top">
+                    <td colspan="2">
+                        <!--                         <script type="text/javascript" language="javascript">
+                            if (ie && mac)
+                                picture =
+                                    '<img src="images/logo.png" width=440 height=112 border=0>';
+                            else
+                                picture =
+                                    '<img src="images/pixel.gif" width=440 height=112 border=0>';
+                            document.open();
+                            document.write(picture);
+                            document.close();
+                        </script>
+
+ -->
+                        <a href="index.html"
+                            ><img
+                                src="images/pixel.gif"
+                                width="391"
+                                height="51"
+                                border="0"
+                                vspace="16"
+                        /></a>
+                        <div align="center">
+                            <img
+                                src="images/visitorone.gif"
+                                width="245"
+                                height="15"
+                                border="0" />
+                        </div>
+                        <br /><br /><br />
+                        <span class="subhead">Edit your preferences:</span
+                        ><img
+                            src="images/pixel333333.gif"
+                            width="100%"
+                            height="1"
+                            vspace="8" /><br />
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+
+            <table>
+                <form name="preferences" target="_top">
+                    <tr valign="top">
+                        <td align="right">Your Name:</td>
+                        <td>
+                            <input
+                                class="text"
+                                type="text"
+                                size="24"
+                                name="visitor"
+                                value="" />
+                        </td>
+                    </tr>
+
+                    <tr valign="top">
+                        <td align="right">Your Email:</td>
+                        <td>
+                            <input
+                                class="text"
+                                type="text"
+                                size="24"
+                                name="email"
+                                value="" />
+                        </td>
+                    </tr>
+
+                    <tr valign="top">
+                        <td align="right">Your Birthday:</td>
+                        <td>
+                            <select name="month">
+                                <option value=""></option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                            <select name="day">
+                                <option value=""></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <!-- <tr valign=top><td colspan=2><br>Links outside of monospace should open:</td></tr> -->
+                    <!-- <tr valign=top><td align=right>&nbsp;</td> -->
+                    <!-- <td> -->
+                    <!-- <input type=radio name="linkOpts" value="same" checked>in the same browser window -->
+                    <!-- <br><input type=radio name="linkOpts" value="new">in a new browser window</td></tr> -->
+
+                    <tr valign="top">
+                        <td align="right">&nbsp;</td>
+                        <td>
+                            <br /><input
+                                type="reset"
+                                value="Clear"
+                                title="Clear all values" />&nbsp;<input
+                                type="button"
+                                value="Reset"
+                                onClick="setForm()"
+                                title="Restore previous values" />&nbsp;<input
+                                type="button"
+                                value="Save"
+                                onClick="savePrefs()"
+                                title="Save this information" />
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td align="right"><br />Or:</td>
+                        <td>
+                            <br /><input
+                                type="button"
+                                value="Delete Cookie"
+                                onClick="deleteCookie()"
+                                title="Delete any saved preferences" />
+                        </td>
+                    </tr>
+                </form>
+            </table>
+
+            <br /><br /><br />
+
+            <ul>
+                <table width="75%">
+                    <tr>
+                        <td class="gray">
+                            <img
+                                src="images/pixel333333.gif"
+                                width="100%"
+                                height="1"
+                                vspace="8" /><br />
+                            Any information you supply here will be used only to
+                            display a personalized page to you. Well, sort of. I
+                            will use your name to say Hello to you, use your
+                            email address to auto-fill the field on the Contact
+                            page, and wish you a Happy Birthday when it's
+                            appropriate... At some point I may actually do
+                            something <i>useful</i> with this information.
+                            <br /><br />Anyway. None of this info will be sent
+                            over the Internet. It will be stored on this (your)
+                            computer only, in the form of a "cookie". (Why?
+                            Because I can.)
+                            <img
+                                src="images/pixel333333.gif"
+                                width="100%"
+                                height="1"
+                                vspace="8" /><br />
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+            <p>
+                <a href="index.html"
+                    ><img
+                        src="images/arrow_left.gif"
+                        width="9"
+                        height="7"
+                        alt=""
+                        border="0" />
+                    Home</a
+                >
+            </p>
+        </ul>
+    </body>
+</html>

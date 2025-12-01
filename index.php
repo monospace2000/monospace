@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>monospace</title>
 <meta name="description" content="monospace" />
 <meta property="og:title" content="monospace" />
@@ -27,6 +27,7 @@
 html, body {
     margin: 0;
     font-family: monospace;
+    font-size: 1.2em;
     color: white;
     height: 100vh;
     overflow: hidden;
@@ -38,9 +39,9 @@ body::before {
     inset: 0;
     z-index: 0;
     background: url('/assets/images/logo_xl_transp.png') 10% 10vh no-repeat,
-                radial-gradient(circle at 35% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 33vw),
+                radial-gradient(ellipse 60% 40% at 20% 0vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 55vw),
                 #000;
-    background-size: 70%, 100%, 100%;
+    background-size: 55%, 100%, 100%;
 }
 
 .section {
@@ -87,13 +88,13 @@ body::before {
 }
 .panel-header {
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+    font-size: clamp(20px, 24px, 28px);
     font-weight: 500;
     margin: -16px 20px 0px 20px;
 }
 .panel-content {
     font-family: 'Roboto', sans-serif;
-    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+    font-size: clamp(16px, 18px, 20px);
     line-height: 1.4;
     font-weight: 300;
     margin: 10px 20px 20px;
@@ -118,7 +119,10 @@ body::before {
     background-repeat: no-repeat;
     background-position: bottom;
 }
-#spotlight-base{ background-image: url(assets/images/spotlight/base.png) }
+#spotlight-base{ 
+    background-image: url(assets/images/spotlight/base.png);
+    display: none; 
+}
 
 /* Footer */
 #copyright {
@@ -130,6 +134,10 @@ body::before {
     color: gray;
 }
 
+.arrow-up, .arrow-down{
+    text-align: left;
+
+}
 @media (hover: hover) and (pointer: fine) {
     /* Base panel-wrap: smooth transition, no glow */
     .panel-wrap:not(#welcome) {
@@ -168,10 +176,6 @@ body::before {
     }
 
 
-
-    
-    .panel-header { font-size: 20px; }
-    .panel-content { font-size: 14px; }
     .spotlight {
         left: 50%;
         top: 35%;
@@ -189,6 +193,31 @@ body::before {
         bottom: 10px;
     }
 }
+
+
+/* rotation tweaks for mobile */
+/* Ensure panels always fit nicely */
+.panel-wrap {
+    width: clamp(250px, 30vw, 400px); /* min 250px, max 400px, responsive in-between */
+}
+
+/* Adjust panel content for readability on all sizes */
+.panel-header {
+    _font-size: clamp(16px, 24px, 28px);
+}
+.panel-content {
+    _font-size: clamp(12px, 16px, 18px);
+}
+
+/* Spotlight size remains responsive */
+.spotlight {
+    width: clamp(150px, 20vw, 250px);
+    aspect-ratio: 320/720;
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -202,10 +231,13 @@ body::before {
     <div class="panel-wrap" id="welcome" data-spotlight="welcome">
         <div class="panel panel-clear">
             <div class="_panel-top"></div>
-            <div class="_panel-header">Welcome!</div>
+            <div class="_panel-header"><!--header--></div>
+            <div class="arrow-up">⬆</div>
             <div class="_panel-content">
-                <br><br>Scroll or swipe up and down to navigate this website. Each section shows a different aspect of my work. Click a panel to explore further.
+                Welcome!
+                <br><br>Scroll or swipe up and down to navigate this page. Each section shows a different aspect of my work. Click a panel to explore further.
             </div>
+            <div class="arrow-down">⬇</div>
         </div>
     </div>
 </div>
@@ -297,7 +329,7 @@ body::before {
         </div>
     </div>
 </div>
-<div class="section">
+<!-- <div class="section">
     <div class="panel-wrap" id="music" data-spotlight="music">
         <div class="panel">
             <div class="panel-top"></div>
@@ -307,7 +339,7 @@ body::before {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="section">
     <div class="panel-wrap" id="portfolio" data-spotlight="portfolio">
         <div class="panel">
@@ -330,13 +362,13 @@ const spotlight = document.getElementById('spotlight-item');
 const sectionsObject = {
     welcome: { isActive: false, spotlightImage: 'assets/images/spotlight/hand.png', panel: document.getElementById('welcome'), url: null },
     art: { isActive: false, spotlightImage: 'assets/images/spotlight/easel.png', panel: document.getElementById('art'), url: 'https://art.monospace.com' },
-    wayback: { isActive: false, spotlightImage: 'assets/images/spotlight/cabinet.png', panel: document.getElementById('wayback'), url: 'wayback/july2001' },
+    wayback: { isActive: false, spotlightImage: 'assets/images/spotlight/cabinet.png', panel: document.getElementById('wayback'), url: 'wayback' },
     sightings: { isActive: false, spotlightImage: 'assets/images/spotlight/sightings.png', panel: document.getElementById('sightings'), url: 'https://sightings.monospace.com' },
     food: { isActive: false, spotlightImage: 'assets/images/spotlight/tocque.png', panel: document.getElementById('food'), url: 'https://food.monospace.com' },
     interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/portfolio/wordpress/portfolio/publishers-clearing-house/monthly-facebook-mini-games/' },
     console: { isActive: false, spotlightImage: 'assets/images/spotlight/console.png', panel: document.getElementById('console'), url: 'console' },
     digits: { isActive: false, spotlightImage: 'assets/images/spotlight/digits.png', panel: document.getElementById('digits'), url: 'https://www.digitalsexlife.com' },
-    color: { isActive: false, spotlightImage: 'assets/images/spotlight/brush.png', panel: document.getElementById('color'), url: 'https://color.monospace.com' },
+    color: { isActive: false, spotlightImage: 'assets/images/spotlight/color.png', panel: document.getElementById('color'), url: 'https://color.monospace.com' },
     music: { isActive: false, spotlightImage: 'assets/images/spotlight/drum.png', panel: document.getElementById('music'), url: 'https://music.monospace.com' },
     portfolio: { isActive: false, spotlightImage: 'assets/images/spotlight/briefcase.png', panel: document.getElementById('portfolio'), url: 'hens/portfolio' }
 };
@@ -391,7 +423,7 @@ Object.values(sectionsObject).forEach(section => {
 /* --------------------------------------------------------- BASIC SETUP --------------------------------------------------------- */
 const sections = Array.from(document.querySelectorAll('.section'));
 const count = sections.length;
-let vh = window.innerHeight;
+let vh = window.innerHeight*0.75;
 let y = 0;
 let dragging = false;
 let lastY = 0;
@@ -399,7 +431,7 @@ let lastTime = 0;
 let velocity = 0;
 const friction = 0.92;
 
-window.addEventListener("resize", () => { vh = window.innerHeight; positionSections(); });
+window.addEventListener("resize", () => { vh = window.innerHeight*0.75; positionSections(); });
 
 let lastOpacity = 1;
 

@@ -1,0 +1,152 @@
+<!--
+
+
+
+Hi there. If you're looking for the JavaSript code, most of that is in the frame 
+
+holding the file "letters.html". Click once in the bottom frame and select "View
+
+Frame Source" from the "View" menu in Netscape (if you're using MSIE, you shouldn't 
+
+even be here!) Have fun.
+
+
+
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<HTML>
+
+<HEAD>
+
+	<TITLE>Crucify! God's Word Game for the entire family.</TITLE>
+
+
+
+<script>
+
+<!--
+
+
+
+loadCount=0
+
+
+
+function checkLoaded(){
+
+	loadCount += 1
+
+	allFramesLoaded()
+
+	}
+
+	
+
+
+
+function allFramesLoaded(){
+
+	if (loadCount==4){
+
+		parent.frames[2].document.images[0].src = "images/ready.gif"
+
+		}
+
+	}
+
+
+
+
+
+//-->
+
+</script>
+
+
+
+
+
+</HEAD>
+
+
+
+
+
+<!----------------------------------------------------------->
+
+
+
+
+
+
+
+<frameset rows="148, *, 64" border=0 frameborder=0 framespacing=0>
+
+	<frame name="title" src="title.html" scrolling=no>
+
+	<frameset cols="*, *" border=0>
+
+		<frame name="image" src="image.html">	
+
+		<frame name="game" src="game.html">	
+
+	</frameset>
+
+	<frame name="letters" src="letters.html" marginwidth=1>
+
+	</frameset>
+
+
+
+</HTML>
+
+
+

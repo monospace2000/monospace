@@ -1,0 +1,49 @@
+<html>
+<!-- Copyright (c)2000 monospace. -->
+<head>
+	<title>blink</title>
+<script type="text/javascript">
+
+		// ------ modify these settings:
+		blinkForeground = "black";
+		blinkBackground = "white";
+		blinkSpeed = 500; // in milliseconds
+		// ------ end of settings 
+		 
+		blinkFlag = false;
+		function blink(){
+			blinkFlag = !blinkFlag;
+			for (var i=0; i<document.all.length; i++){
+				if (document.all[i].id.indexOf("blink") != -1){
+					if (blinkFlag) document.all[i].style.color = blinkForeground;
+					else document.all[i].style.color = blinkBackground;
+				}
+			}
+			window.setTimeout("blink()", blinkSpeed);
+		}
+
+	</script>
+
+<style type=text/css>
+#blink1{
+	font-family: monospace;
+	font-weight: bold;
+	font-size: 72px;
+	text-align: center;
+	color: black;
+}
+a{
+	color: black;
+	font-size: 12px;
+	font-family: monospace;
+	text-align: center;
+}	
+</style>
+
+</head>
+<body onload="blink()">
+<div id=blink1><br><br>&lt;blink&gt;</div>
+<br><br>
+<div align=center><a href="blinksource.html">View Source</a></div>
+</body>
+</html>

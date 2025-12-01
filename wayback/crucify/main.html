@@ -1,0 +1,506 @@
+
+
+
+
+
+
+
+
+<HTML>
+
+<HEAD>
+
+	<TITLE>Crucify! God's Word game for the entire family.</TITLE>
+
+
+
+
+
+<script>
+
+<!-- hide me
+
+
+
+// Copyright (c) 1996 Hens Breet / PRISTINEproductions. All Rights Reserved.
+
+// Re-use code only when origin is mentioned.
+
+
+
+
+
+function main(){
+
+
+
+	var output = ''
+
+
+
+	output += imgTag('', path + 'crucify_s.gif', 217, 48, 0)
+
+	output += '<br>'
+
+	output += imgTag('', path + 'pixel.gif', 160, 17, 0)
+
+	output += imgTag('', path + 'subtitle_s.gif', 223, 12, 0)
+
+	output += '<br><br>'
+
+	output += imgTag('', path + 'pixel.gif', 167, 216, 0)
+
+	output += '<br>'
+
+
+
+
+
+	pickWord()
+
+	output += imgTag('', path + 'pixel.gif', 176, 20, 0)
+
+	output += table('guessWord(index)', currentWord.length, 1, 0, 0, 1, 'black')
+
+	output += '<p>'
+
+	output += table('clickBar(index)', X, Y, 0, 0, 0, 'black')
+
+
+
+	output += '<br>'
+
+	output += anchorTag('javascript:nextWord()', imgTag('', path + 'nword.gif', 61, 12, 0), '', '')
+
+	output += imgTag('', path + 'pixel.gif', 32, 12, 0)
+
+	output += anchorTag('javascript:quit()', imgTag('', path + 'quit.gif', 24, 12, 0), '', '')
+
+
+
+		if (DEBUG) output += initDebug
+
+
+
+	document.write(output)
+
+
+
+
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+//globals
+
+
+
+DEBUG=false
+
+if (DEBUG) initDebug = '<form name="query"><input type=text name="field"><input type=button value="Evaluate" onClick="evalQuery()"></form>'
+
+if (DEBUG) initDebug += '<form name="debug"><textarea name="field" cols=32 rows=8></textarea></form>'
+
+
+
+
+
+X     = 26
+
+Y     = 1
+
+N     = X * Y
+
+SIZE  = 20
+
+path = 'images/'
+
+gameOver = false
+
+
+
+
+
+letter = new Array(27)
+
+isDone = new Array(27)
+
+for (i=1; i<27; i++){
+
+	letter[i] = new Image(20,20)
+
+	letter[i].src = path + "tt/tt" + i + ".gif"
+
+	isDone[i] = false
+
+	}
+
+
+
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+
+
+//preload images
+
+jesus = new Array(7)
+
+for (i=0; i<6; i++){
+
+	jesus[i] = new Image(167, 216)
+
+	jesus[i].src = path + "jesus" + i + ".gif"
+
+	}
+
+	jesus[0].src = path + "pixel.gif"
+
+imageComplete=0
+
+ 
+
+//words
+
+word  = "catholic, hebrew, protestant, hypocrite, cross, water, wine, bigot, salvation, "
+
+word += "redemption, scapegoat, mountain, sea, prophet, profit, money, sin, jew, creation, "
+
+word += "thief, murderer, liar, infidel, saint, sacred, holy, blessing, prayer, heaven, "
+
+word += "hell, sun, moon, star, sky, rain, robe, beard, love, hate, journey, miracle, "
+
+word += "savior, devil, satan, god, demon, angel, prophecy, legacy, heritage, book, "
+
+word += "king, queen, pawn, people, war, peace, lamb, dove, vision, truth, lie, life, "
+
+word += "death, resurrection, grave, cloud, stone, tomb, virgin, priest, preacher, "
+
+word += "teacher, bread, fish, fisherman, ship, temple, church, body, soul, spirit, "
+
+word += "hope, charity, apocalypse, man, woman, child, animal, sacrifice, faith, "
+
+word += "fire, sand, desert, law, eternity, glory, kingdom, empire, son, daughter, "
+
+word += "birth, age, time, universe, space, garden, paradise, unity, strength, comfort, "
+
+word += "sermon, service, supper, parabel, story, history, legend, crown, pagan, "
+
+word += "lord, slave, master, freedom, captivity, battle, right, wrong, snake, flood, "
+
+word += "greed, hunger, envy, wrath, anger, treason, betrayal, confidence, loyalty, "
+
+word += "orthodox, treasure, light, darkness, flame, victory, enemy, destiny, servant, "
+
+word += "good, evil, thunder, lightning, pain, pleasure, silver, gold, leper"
+
+
+
+word = word.split(', ')
+
+currentWord = ''
+
+foundAll = 0
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------
+
+
+
+function debug(code){
+
+	if (DEBUG) document.debug.field.value=code
+
+	}
+
+
+
+function dummy(){}
+
+
+
+function evalQuery(){
+
+	debug(eval(document.query.field.value))
+
+	}
+
+
+
+
+
+
+
+function dummy(){}
+
+		
+
+function keepScore(){}
+
+
+
+
+
+function queryLetter(thisLetter){
+
+offset = 5
+
+if (! gameOver){
+
+
+
+	if (! isDone[thisLetter]){
+
+		foundOne = false
+
+		for (i=0; i<currentWord.length; i++){
+
+			if (currentWord.charAt(i) == alphabet.charAt(thisLetter)){
+
+				foundOne = true
+
+				foundAll += 1
+
+				document.images[offset+i].src = letter[thisLetter+1].src
+
+				}
+
+			}
+
+		if (! foundOne) document.images[3].src = jesus[++imageComplete%6].src
+
+		document.images[offset+currentWord.length+thisLetter].src = path+"pixel.gif"	
+
+		isDone[thisLetter] = true
+
+
+
+		if (imageComplete == 6){
+
+			// game lost:
+
+			for (i=0; i<currentWord.length; i++){
+
+				document.images[offset+i].src = letter[alphabet.indexOf(currentWord.charAt(i))+1].src
+
+				}
+
+			document.images[4].src = path + "hear.gif"
+
+			gameOver = true
+
+			}
+
+		if (foundAll == currentWord.length){
+
+			// game won:
+
+			document.images[4].src = path + "thanks.gif"
+
+			gameOver = true
+
+			}
+
+		}
+
+} // end if
+
+	}
+
+
+
+function pickWord(){
+
+	currentWord = word[Math.floor(Math.random()*word.length)]
+
+	}
+
+
+
+
+
+function constructStatString(let){
+
+	statString = "Dear God, does Your Word contain the letter " + alphabet.charAt(let).toUpperCase() + " ?"
+
+	return statString
+
+	}
+
+
+
+	
+
+
+
+function clickBar(index){
+
+	codeSeg = anchorTag("javascript:queryLetter(" + index + ")", imgTag(alphabet.charAt(index), letter[index+1].src, SIZE, SIZE, 0), '', '')
+
+	return codeSeg
+
+	}
+
+
+
+function guessWord(index){
+
+	codeSeg = imgTag('', path + "pixel.gif", 20, 20, 0)
+
+	return codeSeg
+
+	}
+
+
+
+function quit(){}
+
+
+
+function nextWord(){
+
+	document.location.href = "index.html"
+
+	}
+
+
+
+
+
+function tagIt(input, style){
+
+	return '<' + style + '>' + input + '</' + style + '>'
+
+	}
+
+
+
+function imgTag(name, source, width, height, border){
+
+	var tag = '<img name="' + name +'" src="' + source + '" width=' + width +  ' height=' + height + ' border=' + border + '>'
+
+	return tag
+
+	}
+
+
+
+function rnd(number){
+
+	return Math.floor(Math.random()*number)
+
+	}
+
+
+
+function anchorTag(link, anchor, over, out){
+
+	var tag = '<a href="' + link + '" onMouseOver="' + over + '" onMouseOut="' + out + '">'
+
+	tag += anchor + '</a>'
+
+	return tag
+
+	}
+
+
+
+function table(content, cols, rows, padding, spacing, border, color){
+
+	index = 0
+
+	code = '<table cellpadding=' + padding + ' cellspacing=' + spacing + ' border=' + border + '>'
+
+	for (var i=0; i<rows; i++){
+
+		code += '<tr>'
+
+		for (var j=0; j<cols; j++){
+
+			code += '<td align=center bgcolor=' + color + '>'
+
+			code += eval(content)
+
+			code += '</td>'
+
+			index += 1
+
+			}
+
+		code += '</tr>'
+
+		}
+
+	code += '</table>'
+
+	return code
+
+	}
+
+
+
+
+
+//-->
+
+</script>
+
+
+
+
+
+</HEAD>
+
+
+
+
+
+<!----------------------------------------------------------->
+
+
+
+
+
+<BODY bgcolor=000000 text=ffffff>
+
+
+
+<center>
+
+
+
+
+
+
+
+<script>main()
+
+</script>
+
+
+
+</center>
+
+
+
+</BODY>
+
+
+
+</HTML>
+
+
+

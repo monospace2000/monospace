@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <title>Chord Finder</title>
+
+        <style type="text/css">
+            html {
+                zoom: calc(
+                    100vw / 800px
+                ); /* added in 2025 to make everything look like a 2001 800x600 CRT display */
+            }
+
+            body {
+                background: url(images/paper_big_white.gif) #fff;
+                font-family: 'Lucida Grande', Verdana, Arial, Helvetica, Swiss,
+                    sans-serif;
+                font-size: 11px;
+            }
+            td {
+                font-family: 'Lucida Grande', Verdana, Arial, Helvetica, Swiss,
+                    sans-serif;
+                font-size: 11px;
+            }
+            #chordsgrid {
+                background: url(images/grid1.gif) no-repeat;
+                background-repeat: no-repeat;
+            }
+            .gray {
+                color: #999;
+            }
+        </style>
+
+        <script type="text/javascript" src="chords.js"></script>
+    </head>
+    <body onLoad="showChord()">
+        <div id="canv" align="center">
+            <h3>Chord Finder</h3>
+
+            <table id="chordsgrid" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td rowspan="5" id="fret" valign="top"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                    <td>
+                        <img src="images/transp.gif" width="8" height="8" />
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+
+            <form name="selector">
+                <select name="key" onChange="showChord()">
+                    <option value="c_" selected>C</option>
+                    <option value="c#_">C#/Db</option>
+                    <option value="d_">D</option>
+                    <option value="d#_">D#/Eb</option>
+                    <option value="e_">E</option>
+                    <option value="f_">F</option>
+                    <option value="f#_">F#/Gb</option>
+                    <option value="g_">G</option>
+                    <option value="g#_">G#/Ab</option>
+                    <option value="a_">A</option>
+                    <option value="a#_">A#/Bb</option>
+                    <option value="b_">B</option>
+                </select>
+                <select name="variant" onChange="showChord()">
+                    <option value="maj" selected>Major</option>
+                    <option value="7">Seventh</option>
+                    <option value="6">Sixth</option>
+                    <option value="min">Minor</option>
+                    <option value="min7">Min 7th</option>
+                    <option value="min6">Min 6th</option>
+                    <option value="aug">Aug</option>
+                    <option value="dim">Dim</option>
+                    <option value="maj7">Maj 7th</option>
+                    <option value="9">Ninth</option>
+                    <option value="11">11th</option>
+                    <option value="7aug">7th Aug</option>
+                    <option value="7sus4">7 Sus 4</option>
+                </select>
+            </form>
+
+            <span class="gray">brought to you by monospace</span>
+        </div>
+    </body>
+</html>

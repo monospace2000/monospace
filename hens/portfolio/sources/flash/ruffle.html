@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My Drumset - 2001</title>
+        <style>
+            body {
+                background: black;
+                color: white;
+                overflow: hidden;
+            }
+            #container {
+                position: absolute;
+                width: 99vw;
+                height: 99vh;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+
+        <script>
+            window.RufflePlayer = window.RufflePlayer || {};
+            window.addEventListener('load', (event) => {
+                const ruffle = window.RufflePlayer.newest();
+                const player = ruffle.createPlayer();
+                const container = document.getElementById('container');
+                container.appendChild(player);
+
+                player.style.width = '100%';
+                player.style.height = '100%';
+
+                player.ruffle().load({
+                    url: 'drumset.swf',
+                    autoplay: 'on',
+                    splashScreen: false,
+                    unmuteOverlay: 'hidden'
+                });
+            });
+        </script>
+        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    </body>
+</html>

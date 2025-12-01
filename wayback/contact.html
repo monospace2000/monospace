@@ -1,0 +1,210 @@
+<html>
+    <head>
+        <title>m o n o s p a c e : contact</title>
+        <script
+            type="text/javascript"
+            language="javascript"
+            src="monospace.js"></script>
+        <link rel="stylesheet" href="monospace.css" />
+
+        <script type="text/javascript" language="javascript">
+            if (ie || moz) {
+                style = "<style type='text/css'>";
+                if (mac && !moz)
+                    style +=
+                        'body{ background: url(images/glow.gif); background-attachment: fixed; background-repeat: no-repeat; background-color: 000000; }';
+                style +=
+                    'input{background: #000000; border: solid 1px #333333; 	font-family: ""Lucida Grande"", verdana, geneva, sans-serif;  color: white; font-size:11px; }';
+                style +=
+                    'select{background-color: black; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; font-size:11px; color: white}';
+                style +=
+                    'input.text{background-color: #ffffcc; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; color: black; font-size:11px; }';
+                style +=
+                    'textarea{background-color: #ffffcc; border: solid 1px #333333; font-family: ""Lucida Grande"", verdana, geneva, sans-serif; color: black; font-size:11px; }';
+                style += '</style>';
+                document.open();
+                document.write(style);
+                document.close();
+            }
+
+            function validateMessage() {
+                with (document.contact) {
+                    e = sender.value;
+                    m = message.value;
+                    if (e != '' && m != '') {
+                        if (e.indexOf('@') != -1 && e.indexOf('.') != -1) {
+                            submit();
+                            alert('Thanks. Your message has been sent!');
+                        } else {
+                            alert('Please enter a valid email address.');
+                        }
+                    } else {
+                        alert('All fields are required.');
+                    }
+                }
+            }
+
+            loadPrefs();
+            function loadPrefs() {
+                savedPrefs = unescape(document.cookie);
+                if (savedPrefs.indexOf('prefs') != -1) {
+                    userPrefs = true;
+                    tmpArray = savedPrefs
+                        .substring(6, savedPrefs.length)
+                        .split('+');
+                    prefs = new Array();
+                    for (var i = 0; i < tmpArray.length; i++) {
+                        nameValuePair = tmpArray[i].split('=');
+                        prefs[nameValuePair[0]] = nameValuePair[1];
+                    }
+                } else userPrefs = false;
+            }
+
+            function setMailForm() {
+                if (userPrefs) {
+                    if (prefs.email != '')
+                        document.contact.sender.value =
+                            prefs.name + ' <' + prefs.email + '>';
+                }
+                loc = document.location.toString();
+                if (loc.indexOf('?') != -1) {
+                    topic = loc.substring(loc.indexOf('?') + 1, loc.length);
+                    if (topic == 'problem') topicID = 1;
+                    if (topic == 'url') topicID = 2;
+                    if (topic == 'services') topicID = 3;
+                    if (topic == 'resume') topicID = 4;
+                    document.contact.subject.options[topicID].selected = true;
+                    setMessage(topicID);
+                } else setMessage(0);
+            }
+            function setMessage(msgType) {
+                messages = new Array();
+                messages[0] = 'Please enter your message here.';
+                messages[1] =
+                    'Please indicate the page, feature and kind of problem you encountered.';
+                messages[2] =
+                    'Please supply a valid URL and a brief description of its content.';
+                messages[3] =
+                    'Please indicate the services you are interested in.';
+                messages[4] =
+                    'When requesting a resume, please supply your name and contact info and the reason of your interest.';
+
+                document.contact.message.value = messages[msgType];
+                document.contact.message.select();
+            }
+        </script>
+    </head>
+
+    <body bgcolor="black" text="white" onLoad="setMailForm();">
+        <ul>
+            <table width="80%">
+                <tr valign="top">
+                    <td colspan="2">
+                        <script type="text/javascript" language="javascript">
+                            if (ie && mac)
+                                picture =
+                                    '<img src="images/logo.png" width=440 height=112 border=0>';
+                            else
+                                picture =
+                                    '<img src="images/pixel.gif" width=440 height=112 border=0>';
+                            document.open();
+                            document.write(picture);
+                            document.close();
+                        </script>
+                        <div align="center">
+                            <img
+                                src="images/visitorone.gif"
+                                width="245"
+                                height="15"
+                                border="0" />
+                        </div>
+                        <br /><br /><br />
+                        <span class="subhead"
+                            >Use this form to send email to monospace</span
+                        ><img
+                            src="images/pixel333333.gif"
+                            width="100%"
+                            height="1"
+                            vspace="8" /><br />
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+
+            <table>
+                <!-- <form name="contact" action="http://207.42.1.11/cgi-bin/contact.cgi" method="post"> -->
+                <form
+                    name="contact"
+                    action="/pcgi-bin/contact.cgi"
+                    method="post">
+                    <tr valign="top">
+                        <td align="right">Subject:</td>
+                        <td>
+                            <select
+                                name="subject"
+                                onChange="setMessage(this.options.selectedIndex)">
+                                <option value="General Feedback" selected>
+                                    General Feedback
+                                </option>
+                                <option value="Website Comments">
+                                    Web Site Problem
+                                </option>
+                                <option value="URL Suggestion">
+                                    URL Suggestion
+                                </option>
+                                <option value="Information About Classes">
+                                    Information on Services
+                                </option>
+                                <option value="Resume Request">
+                                    Resume Request
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td align="right">Your email:</td>
+                        <td>
+                            <input
+                                class="text"
+                                type="text"
+                                size="32"
+                                name="sender"
+                                value="" />
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td align="right">Message:</td>
+                        <td>
+                            <textarea name="message" rows="8" cols="32">
+Please enter your message here.</textarea
+                            >
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td align="right">&nbsp;</td>
+                        <td>
+                            <input type="reset" value="Clear" />&nbsp;<input
+                                type="button"
+                                value="Send"
+                                onClick="validateMessage()" />
+                        </td>
+                    </tr>
+                </form>
+            </table>
+
+            <p>
+                <a href="http://www.monospace.com/wayback"
+                    ><img
+                        src="images/arrow_left.gif"
+                        width="9"
+                        height="7"
+                        alt=""
+                        border="0" />
+                    Home</a
+                >
+                <br /><br /><br />
+            </p>
+        </ul>
+    </body>
+</html>

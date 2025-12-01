@@ -1,0 +1,112 @@
+<html>
+<head>
+    <title>blink</title>
+
+    <script type="text/javascript">
+
+        // ------ modify these settings:
+        blinkForeground = "black";
+        blinkBackground = "white";
+        blinkSpeed = 500; // in milliseconds
+        // ------ end of settings 
+         
+        blinkFlag = false;
+        function blink(){
+            blinkFlag = !blinkFlag;
+            for (var i=0; i<document.all.length; i++){
+                if (document.all[i].id.indexOf("blink") != -1){
+                    if (blinkFlag) document.all[i].style.color = blinkForeground;
+                    else document.all[i].style.color = blinkBackground;
+                }
+            }
+            window.setTimeout("blink()", blinkSpeed);
+        }
+
+    </script>
+
+<style type=text/css>
+#box{
+    color: blue;
+    font-family: monospace;
+    font-size: 12px;
+}
+code{
+    color: blue;
+    font-family: monospace;
+    font-size: 12px;
+}
+</style>
+
+</head>
+<body onLoad="blink()">
+
+<div style="font-size:18px; font-weight:bold;">
+This is an example of <span id=blink1>blinking</span> text in Internet Explorer.
+Don't you just <span id=blink2>LOVE</span> it?
+</div>
+
+<div style="margin-left:32px; width:75%">
+
+<p>
+Ok, here's how it works. This piece of script goes in the document head (notice the three variables that you can modify to suit your needs):
+</p>
+
+<div id=box><pre>
+&lt;script type="text/javascript"&gt;
+&lt;!--
+// ------ modify these settings:
+blinkForeground = "black";
+blinkBackground = "white";
+blinkSpeed = 500; // in milliseconds
+// ------ end of settings 
+
+blinkFlag = false;
+function blink(){
+	blinkFlag = !blinkFlag;
+	for (var i=0; i&lt;document.all.length; i++){
+		if (document.all[i].id.indexOf("blink") != -1){
+			if (blinkFlag) document.all[i].style.color = blinkForeground;
+			else document.all[i].style.color = blinkBackground;
+		}
+	}
+	window.setTimeout("blink()", blinkSpeed);
+}
+//--&gt;
+&lt;/script&gt;
+</pre></div>
+
+<p>
+You then enclose the text you want to blink inside a <code>&lt;span&gt;</code> tag, making sure each <code>&lt;span&gt;</code> has a unique id that contains the word "blink", for example blink1, blink2, etc:
+</p>
+
+<div id=box><code>
+<br>This is an example of &lt;span id=blink1&gt;blinking&lt;/span&gt; text in Internet Explorer.
+Don't you just &lt;span id=blink2&gt;LOVE&lt;/span&gt; it?
+<br><br></code></div>
+
+<p>
+Finally, add a call to the <code>blink()</code> function in the document body's <code>onLoad</code> event handler:
+</p>
+
+<div id=box><pre>
+&lt;body onLoad="blink()"&gt;
+</pre></div>
+
+<p>
+That's it. Enjoy.
+</p>
+
+
+<div style="font-size:10px;">
+PS: Needless to say, this won't work in Netscape... I'll just leave it to you to modify this script so that Netscape doesn't choke on it :)
+</div>
+
+</div>
+
+<div style="font-size:9px; color:gray;margin-top:32px;">
+Copyright (c)2000 monospace.
+</div>
+
+</body>
+
+</html>

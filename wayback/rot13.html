@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>Rot13</title>
+
+        <style type="text/css">
+            a {
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            textarea {
+                font-family: courier, courier new;
+                color: black;
+                background-color: ffffee;
+            }
+            body {
+                font-family: arial, helvetica;
+                background-color: 999999;
+                color: 000000;
+            }
+            #head {
+                font-family: arial, helvetica;
+                color: 666666;
+                font-size: 24px;
+                font-weight: bold;
+                font-style: italic;
+            }
+            #text {
+                font-family: courier, courier new;
+                color: 999999;
+                font-size: 12px;
+                font-weight: bold;
+            }
+            #copy {
+                font-family: arial, helvetica;
+                color: 666666;
+                font-size: 10px;
+            }
+        </style>
+
+        <script>
+            lower = 'abcdefghijklmnopqrstuvwxyz';
+            upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            function rot13(theForm) {
+                output = '';
+                with (theForm) {
+                    input = message.value;
+                    for (i = 0; i < input.length; i++) {
+                        letter = input.charAt(i);
+                        lowerPos = lower.indexOf(letter);
+                        upperPos = upper.indexOf(letter);
+                        if (lowerPos != -1) {
+                            output += lower.charAt(add13(lowerPos));
+                        } else if (upperPos != -1) {
+                            output += upper.charAt(add13(upperPos));
+                        } else {
+                            output += letter;
+                        }
+                    }
+                    message.value = output;
+                }
+            }
+
+            function add13(v) {
+                return v >= 13 ? v - 13 : v + 13;
+            }
+
+            function help() {
+                document.forms[0].message.value =
+                    'From the Jargon File:\n\nrot13 /rot ther\'teen/ /n.,v./ [Usenet: from \'rotate alphabet 13 places\'] \n\nThe simple Caesar-cypher encryption that replaces each English letter with the one 13 places forward or back along the alphabet, so that "The butler did it!" becomes "Gur ohgyre qvq vg!" \n\nMost Usenet news reading and posting programs include a rot13 feature. \n\nIt is used to enclose the text in a sealed wrapper that the reader must choose to open -- e.g., for posting things that might offend some readers, or spoilers. \n\nA major advantage of rot13 over rot(N) for other N is that it is self-inverse, so the same code can be used for encoding and decoding.';
+            }
+
+            function init() {
+                document.forms[0].message.value =
+                    'Enter the text to encrypt here.';
+                document.forms[0].message.focus();
+            }
+        </script>
+    </head>
+    <body onLoad="init()">
+        <div id="head">rot 13 - the poor man's crypto</div>
+        <br />
+        <center>
+            <table border="2" bgcolor="cccccc">
+                <tr>
+                    <td>
+                        <form>
+                            <table>
+                                <tr>
+                                    <td colspan="2">
+                                        <textarea
+                                            name="message"
+                                            cols="64"
+                                            rows="24"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <input
+                                            type="button"
+                                            value=" ? "
+                                            onClick="help()" />
+                                    </td>
+                                    <td align="right" valign="top">
+                                        <input
+                                            type="reset"
+                                            value="Clear" />&nbsp;&nbsp;&nbsp;<input
+                                            type="button"
+                                            value="Rot13"
+                                            onClick="rot13(this.form)" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <span id="copy"
+                >Copyright (c)2000 monospace. All rights Reserved.</span
+            >
+        </center>
+    </body>
+</html>

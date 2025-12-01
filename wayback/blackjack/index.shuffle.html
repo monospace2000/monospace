@@ -1,0 +1,79 @@
+<html>
+<head>
+	<title>Pick a card</title>
+
+<script><!--
+// Card shuffler version 0.1
+// Exclusively for LIZVEGAS.COM
+// Copyright (c)2000 monospace.
+// All rights reserved.
+
+
+// preload images
+cards = new Array();
+for (i=1; i<=52; i++){
+	cards[i] = new Image(67,90);
+	cards[i].src = "deck/" + i + ".gif";
+}
+
+timerID = null;
+shuffling = false;
+
+// init suites and card names
+names = "King,Ace,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten,Jack,Queen";
+names = names.split(',');
+suites = "Hearts,Spades,Diamonds,Clubs,Clubs";
+suites = suites.split(',');
+
+
+// pick and display a card (iterative)
+function pickOne(){
+	pick = Math.ceil(Math.random()*52);
+	document.card.src = cards[pick].src;
+	timerID = setTimeout("pickOne()", 10);
+}
+
+// stop picking and display
+function stop(){
+	if (shuffling){
+		shuffling = false;
+		clearTimeout(timerID);
+		readCard(pick);
+	}
+}
+
+// start shuffling
+function start(){
+	if (!shuffling){
+		shuffling = true;
+		document.feedback.output.value = "";
+		timerID = setTimeout("pickOne()", 10);
+	}
+}
+
+// display name of selected card
+function readCard(cardNumber){
+	suite = suites[Math.floor(cardNumber/13)];
+	cardName = names[cardNumber % 13];
+	document.feedback.output.value= cardName + " of " + suite;	 
+}
+
+//--></script>
+
+</head>
+<body bgcolor=008800 text=black>
+
+<center>
+
+
+<img name="card" src="deck/back.gif" width="67" height="90" border="0">
+
+<form name="feedback">
+<input type=text value="" name="output"><br>
+<input type=button value="Shuffle" onClick="start()">
+<input type=button value="Stop" onClick="stop()">
+<form>
+
+</center>
+</body>
+</html>
