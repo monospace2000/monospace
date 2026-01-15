@@ -81,7 +81,7 @@
     z-index: 9999;
     overflow: auto;            /* only scroll if necessary */
     padding: 10px;
-	display: block;
+	display: none;
 }
 
 
@@ -136,7 +136,7 @@ function loadPrefs(){
 		prefs = new Array();
 		for (var i=0; i<tmpArray.length; i++){
 			nameValuePair = tmpArray[i].split("=");
-			prefs[nameValuePair[0]] = nameValuePair[1];	
+			prefs[nameValuePair[0]] = nameValuePair[1];
 		}
 	} else userPrefs = false;
 }
@@ -158,27 +158,27 @@ function redirect(destination){
 	var domain ="http://www.monospace.com"; // needed by Netscrape
     domain="";
 	var fwdPage = domain + "forward.html";
-	
+
 	// external page
 	if (destination.indexOf('monospace') == -1 && destination.indexOf('http://') != -1){
-		
+
 		// no prefs set: use same window with a delay
 		if (!userPrefs){
 			document.location = fwdPage + "?" + destination;
-		
+
 		// user has prefs
 		} else{
 
 			// same window with delay
 			if (prefs.linkOptions == "same"){
-				document.location = fwdPage + "?" + destination;		
-	
+				document.location = fwdPage + "?" + destination;
+
 			// open new window
 			} else{
 				window.open(destination, "", "favorites=yes,toolbar=yes,location=yes,status=yes,directories=yes,menubar=yes,scrollbars=yes,resizable=yes");
 			}
 		}
-	
+
 	// internal page
 	}else{
 		document.location = destination;
@@ -216,8 +216,8 @@ function showDate(){
 </head>
 
 <body bgcolor="black" text="white" link="gray" vlink="gray" alink="white">
-    
- 
+
+
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
@@ -229,10 +229,10 @@ function showDate(){
 					</td>
 					<td colspan="3" valign="bottom"><!-- logo and greeting -->
 						<a href="http://www.monospace.com/"><img src="images/pixel.gif" width="391" height="51" border="0" vspace="16"></a>
-						
+
 						<script type="text/javascript">welcome()</script>
 						<a href="#links"><small>Go directly to the links</small></a>
-						
+
 						<br><br>
 						<div align="center">
 							<img src="images/visitorone.gif" width="245" height="15" border="0">
@@ -241,7 +241,7 @@ function showDate(){
 					</td>
 					<td rowspan="9" nowrap valign="top"><!-- sidebar -->
 						<br><br>
-						
+
 
 						<form name="date" target="_blank" title="Previous days">
 				<select name="selection" onchange="return; redirect(this.options[this.selectedIndex].value)">
@@ -303,17 +303,17 @@ function showDate(){
 				</select>
 			</form>
 
-			
+
 <!-- <br><br>
 			<center>
 				<form action="" name="google" title="Search with Google">
 				<input type="hidden" name="siteid" value="36515031">
 				<input type="hidden" name="bfpage" value="vertical_black">
-				<input type="hidden" name="bfmid" value="27253343"> 
+				<input type="hidden" name="bfmid" value="27253343">
 				<img src="https://web.archive.org/web/20010309085224im_/http://www.google.com/affiliates/logo_blk.gif" border="0" alt="Google" width="75" height="32">
 				<br><input class="text" type="text" name="q" size="15" maxlength="255" value="">
 				<br><br><input type="submit" name="sa" value="search">
-				</form>        
+				</form>
 			</center>
 <br><br> -->
 
@@ -345,7 +345,7 @@ function showDate(){
 						<img src="images/pixel.gif" width="32" height="32" border="0">
 					</td>
 				</tr>
-			
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -357,7 +357,7 @@ function showDate(){
 						<img src="images/icons/chair.gif" width="127" height="241" align="right" hspace="32" vspace="0" border="0" alt="Box">
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -380,8 +380,8 @@ function showDate(){
 					<br><img src="images/pixel.gif" width="48" height="48" border="0">
 					</td>
 				</tr>
-				
-	
+
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -390,7 +390,7 @@ function showDate(){
 						<span class="section"><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="dutchwordlist.php" title="Huh?">Dutch word of the day:</a></span>
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -412,7 +412,7 @@ function showDate(){
 						<span class="section">Featured link:</span>
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -434,7 +434,7 @@ function showDate(){
 						<span class="section">Previously featured links:</span>
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td><!-- spacer -->
 						<img src="images/pixel.gif" width="32" height="32" border="0">
@@ -456,7 +456,7 @@ function showDate(){
 
 
 
-			</table>		
+			</table>
 
 		</td>
 
@@ -522,7 +522,7 @@ function showDate(){
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.straphangers.org/&quot;)" title="Interactive subway map">Straphangers Campaign</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://newyork.craigslist.org/&quot;)" title="News, events, jobs, classifieds">Craig's List for NYC</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.forgotten-ny.com/&quot;)" title="Lesser known facts about the greatest city in the world">Forgotten New York</a>
-		</td>						
+		</td>
 		<td>
 			<img src="images/pixel.gif" width="32" height="32" border="0">
 		</td>
@@ -633,7 +633,7 @@ function showDate(){
 			<div class="subhead">movies</div>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.allmovie.com/&quot;)" title="Movies and reviews">All Movie Guide</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.moviefone.com/&quot;)" title="Buy movie tickets online">Moviefone</a>
-		</td>				
+		</td>
 		<td>
 			<img src="images/pixel.gif" width="32" height="32" border="0">
 		</td>
@@ -663,15 +663,15 @@ function showDate(){
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.astro.com/&quot;)" title="Free personal readings">Astrodienst</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.facade.com/&quot;)" title="Tarot, Runes, I-Ching, Biorhythms">Facade</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.chinese-astrology.com/&quot;)" title="Chinese Astrology">Chinese Astrology</a>
-			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.kabalarians.com/&quot;)" title="Numerology: What's in YOUR name?">Kabalarians</a>							
-			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.dreamscape.com/morgana/titan.htm&quot;)" title="Selected prophecies of the medieval alchemist">Nostradamus</a>							
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.kabalarians.com/&quot;)" title="Numerology: What's in YOUR name?">Kabalarians</a>
+			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.dreamscape.com/morgana/titan.htm&quot;)" title="Selected prophecies of the medieval alchemist">Nostradamus</a>
 			<br><br><br>
 			<div class="subhead">drugs</div>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.norml.org/&quot;)" title="National Organization for the Reform of Marijuana Laws">NORML</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.drugsense.org/&quot;)" title="Drug policy reform">Drug Sense</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.marijuanamagazine.com/&quot;)" title="The Drug War against the sick">Medical Marijuana Magazine</a>
 			<br><a onmouseover="window.status=this.innerText; return true;" onmouseout="window.status=''; return true;" href="javascript:redirect(&quot;http://www.mcwilliams.com/books/books/aint/&quot;)" title="&quot;The Absurdity of Consensual Crimes in a Free Country&quot;">Ain't Nobody's Business If You Do</a>
-		</td>	
+		</td>
 		<td>
 			<img src="images/pixel.gif" width="32" height="32" border="0">
 		</td>
@@ -713,65 +713,30 @@ function showDate(){
   </div>
 </div>
 
-
 <script>
-(function(){
-  // Utility: addEvent shortcut
-  function on(el, ev, fn){ el.addEventListener(ev, fn, false); }
+document.addEventListener("DOMContentLoaded", function () {
+  const overlay = document.getElementById("ms-overlay");
+  const closeBtn = document.getElementById("ms-close");
 
-  // Show modal
-  function showLightbox(){
-    var overlay = document.getElementById('ms-overlay');
-    var modal = document.getElementById('ms-modal');
-    if (!overlay || !modal) return;
-    overlay.style.display = 'block';
-    // try to preserve page scrolling behavior (optional)
-    document.body.style.overflow = 'hidden';
-    // focus the modal for accessibility
-    try { modal.focus(); } catch (e) {}
+  if (!overlay) return;
+
+  if (sessionStorage.getItem("msLightboxShown")) {
+    overlay.style.display = "none";
+    return;
   }
 
-  // Hide modal
-  function hideLightbox(){
-    var overlay = document.getElementById('ms-overlay');
-    if (!overlay) return;
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+  sessionStorage.setItem("msLightboxShown", "1");
+  overlay.style.display = "block";
 
-  // close button behavior
-  on(document, 'click', function(e){
-    var t = e.target || e.srcElement;
-    if (t && t.id === 'ms-close') {
+  if (closeBtn) {
+    closeBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      hideLightbox();
-    }
-  });
-
-  // close on ESC
-  on(document, 'keydown', function(e){
-    var key = e.key || e.keyCode;
-    if (key === 'Escape' || key === 'Esc' || key === 27) hideLightbox();
-  });
-
-  // click outside modal to close (overlay click)
-  on(document, 'click', function(e){
-    var target = e.target || e.srcElement;
-    var overlay = document.getElementById('ms-overlay');
-    var modal = document.getElementById('ms-modal');
-    if (!overlay || !modal) return;
-    if (target === overlay) hideLightbox();
-  });
-
-  // Wait for DOM to be ready, then display
-  on(document, 'DOMContentLoaded', function(){
-    // small timeout so the original onload popAnnounce (if any) finishes first visually
-    setTimeout(showLightbox, 250);
-  });
-})();
+      overlay.style.display = "none";
+    });
+  }
+});
 </script>
 
-<!-- END OF LIGHTBOX -->
 
 </body>
 

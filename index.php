@@ -119,9 +119,9 @@ body::before {
     background-repeat: no-repeat;
     background-position: bottom;
 }
-#spotlight-base{ 
+#spotlight-base{
     background-image: url(assets/images/spotlight/base.png);
-    display: none; 
+    display: none;
 }
 
 /* Footer */
@@ -165,14 +165,14 @@ body::before {
         /* Reset section padding and keep full viewport */
 
     .section {
-    justify-content: center; 
+    justify-content: center;
     align-items: bottom;
     padding-left: 0; /* left offset */
 
     }
 
     .panel-wrap {
-        width: 90%;        
+        width: 90%;
     }
 
 
@@ -232,12 +232,12 @@ body::before {
         <div class="panel panel-clear">
             <div class="_panel-top"></div>
             <div class="_panel-header"><!--header--></div>
-            <div class="arrow-up">⬆</div>
+            <div class="arrow-up"></div>
             <div class="_panel-content">
                 Welcome!
                 <br><br>Scroll or swipe up and down to navigate this page. Each section shows a different aspect of my work. Click a panel to explore further.
             </div>
-            <div class="arrow-down">⬇</div>
+            <div class="arrow-down"></div>
         </div>
     </div>
 </div>
@@ -280,7 +280,7 @@ body::before {
             <div class="panel-top"></div>
             <div class="panel-header">monospace INTERACTIVE</div>
             <div class="panel-content">
-                I have decades of hands-on experience designning and coding interactive experiences that are both engaging and memorable, from web-based mini-games to immersive multimedia projects. 
+                I have decades of hands-on experience designning and coding interactive experiences that are both engaging and memorable, from web-based mini-games to immersive multimedia projects.
             </div>
         </div>
     </div>
