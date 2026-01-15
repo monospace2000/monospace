@@ -1,0 +1,9 @@
+# Error logs
+php_errorlog
+error_log
+*.log
+debug.log
+wp-content/debug.log
+
+# macOS
+.DS_Store
