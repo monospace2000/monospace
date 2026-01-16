@@ -79,6 +79,7 @@ body::before {
     border: none;
     cursor: default;
     backdrop-filter: none;
+    padding-bottom:10vh !important;
 }
 .panel-top {
     height: 20px;
@@ -134,6 +135,38 @@ body::before {
     color: gray;
 }
 
+/* Keyboard focus styles */
+
+/* .panel-wrap:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.2);
+    outline-offset: 4px;
+}
+.panel-wrap:focus .panel {
+    box-shadow: 0 0 20px 8px rgba(255,255,255,0.6),
+                10px 10px 10px rgba(0,0,0,0.3),
+                -10px 10px 10px rgba(0,0,0,0.3),
+                inset 5px 5px 10px rgba(0,0,0,0.2),
+                inset -5px -5px 10px rgba(0,0,0,0.2);
+}
+ */
+
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -42px;
+    left: 0;
+    background: #000;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+    border: 2px solid white;
+}
+
+/* .skip-link:focus {
+    top: 0;
+}
+ */
 .arrow-up, .arrow-down{
     text-align: left;
 
@@ -166,8 +199,9 @@ body::before {
 
     .section {
     justify-content: center;
-    align-items: bottom;
+    align-items: flex-end;
     padding-left: 0; /* left offset */
+    padding-bottom: 10vh; /* space for panels at bottom */
 
     }
 
@@ -178,15 +212,15 @@ body::before {
 
     .spotlight {
         left: 50%;
-        top: 35%;
-        transform: translate(-50%, -40%);
+        top: 10vh;
+        transform: translate(-50%, 0);
         width: min(200px, 50vw);
         height: auto;
         aspect-ratio: 320/720;
         right: auto;
         bottom: auto;
-        max-height: calc(100vh - 35vh - 30%);
-        max-width: calc((100vh - 35vh - 30%) * 320 / 720);
+        max-height: 40vh;
+        max-width: calc(40vh * 320 / 720);
     }
     #copyright {
         font-size: 10px;
@@ -222,27 +256,30 @@ body::before {
 </head>
 <body>
 
-<div class="spotlight">
+<a href="#welcome" class="skip-link">Skip to main content</a>
+
+<div class="spotlight" aria-hidden="true">
     <div class="item" id="spotlight-base"></div>
     <div class="item" id="spotlight-item"></div>
 </div>
 
+<main role="main" aria-label="Portfolio sections">
 <div class="section">
-    <div class="panel-wrap" id="welcome" data-spotlight="welcome">
+    <div class="panel-wrap" id="welcome" data-spotlight="welcome" tabindex="0" role="article" aria-label="Welcome section">
         <div class="panel panel-clear">
             <div class="_panel-top"></div>
             <div class="_panel-header"><!--header--></div>
             <div class="arrow-up"></div>
-            <div class="_panel-content">
+            <div class="_panel-content" style="padding:12px;">
                 Welcome!
-                <br><br>Scroll or swipe up and down to navigate this page. Each section shows a different aspect of my work. Click a panel to explore further.
+                <br><br>Scroll, swipe, or use arrow keys to navigate this page. Each section shows a different aspect of my work. Click or press Enter on a panel to explore further.
             </div>
             <div class="arrow-down"></div>
         </div>
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="art" data-spotlight="art">
+    <div class="panel-wrap" id="art" data-spotlight="art" tabindex="0" role="article" aria-label="monospace ART - Painting and sketches">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">monospace ART</div>
@@ -253,7 +290,7 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="sightings" data-spotlight="sightings">
+    <div class="panel-wrap" id="sightings" data-spotlight="sightings" tabindex="0" role="article" aria-label="Sightings of the Strangely Familiar - Digital sketches">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">Sightings of the Strangely Familiar</div>
@@ -264,7 +301,7 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="food" data-spotlight="food">
+    <div class="panel-wrap" id="food" data-spotlight="food" tabindex="0" role="article" aria-label="Food photography">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">monospace FOOD</div>
@@ -275,7 +312,7 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="interactive" data-spotlight="interactive">
+    <div class="panel-wrap" id="interactive" data-spotlight="interactive" tabindex="0" role="article" aria-label="monospace INTERACTIVE - Web-based games and multimedia">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">monospace INTERACTIVE</div>
@@ -286,7 +323,7 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="console" data-spotlight="console">
+    <div class="panel-wrap" id="console" data-spotlight="console" tabindex="0" role="article" aria-label="THE MONOSPACE CONSOLE - 1998 Shockwave project">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">THE MONOSPACE CONSOLE</div>
@@ -297,7 +334,7 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="wayback" data-spotlight="wayback">
+    <div class="panel-wrap" id="wayback" data-spotlight="wayback" tabindex="0" role="article" aria-label="2001 TIME CAPSULE - Historical website snapshot">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">2001 TIME CAPSULE</div>
@@ -308,18 +345,18 @@ body::before {
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="digits" data-spotlight="digits">
+    <div class="panel-wrap" id="digits" data-spotlight="digits" tabindex="0" role="article" aria-label="DIGITAL SEX LIFE - 1992 interactive artwork">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">DIGITAL SEX LIFE</div>
             <div class="panel-content">
-                An early interactive artwork from 1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten with a little aid of an LLM coding assistant.
+                An early interactive artwork from 1991-1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten.
             </div>
         </div>
     </div>
 </div>
 <div class="section">
-    <div class="panel-wrap" id="color" data-spotlight="color">
+    <div class="panel-wrap" id="color" data-spotlight="color" tabindex="0" role="article" aria-label="monospace COLOR - Restored vintage photographs">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">monospace COLOR</div>
@@ -330,7 +367,7 @@ body::before {
     </div>
 </div>
 <!-- <div class="section">
-    <div class="panel-wrap" id="music" data-spotlight="music">
+    <div class="panel-wrap" id="music" data-spotlight="music" tabindex="0" role="article" aria-label="monospace MUSIC - Original recordings">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">monospace MUSIC</div>
@@ -341,7 +378,7 @@ body::before {
     </div>
 </div> -->
 <div class="section">
-    <div class="panel-wrap" id="portfolio" data-spotlight="portfolio">
+    <div class="panel-wrap" id="portfolio" data-spotlight="portfolio" tabindex="0" role="article" aria-label="PORTFOLIO - Professional work and resume">
         <div class="panel">
             <div class="panel-top"></div>
             <div class="panel-header">PORTFOLIO</div>
@@ -351,10 +388,11 @@ body::before {
         </div>
     </div>
 </div>
+</main>
 
-<div id="copyright">
+<footer id="copyright" role="contentinfo">
     Copyright &copy; 1998&mdash;2025 monospace. You are visitor number one.
-</div>
+</footer>
 
 <script>
 // Sections spotlight setup
@@ -407,11 +445,20 @@ window.getActiveSection = getActiveSection;
 window.setActiveSection = setActiveSection;
 
 
-// Make panels clickable based on their URL in sectionsObject
+// Make panels clickable and keyboard accessible
 Object.values(sectionsObject).forEach(section => {
     if (section.url) {
+        // Click handler
         section.panel.addEventListener('click', () => {
             window.location.href = section.url;
+        });
+
+        // Enter/Space key handler
+        section.panel.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.location.href = section.url;
+            }
         });
     }
 });
@@ -513,6 +560,49 @@ document.addEventListener("wheel", e => {
     velocity = delta;
     positionSections();
 }, { passive:false });
+
+/* --------------------------------------------------------- KEYBOARD NAVIGATION --------------------------------------------------------- */
+document.addEventListener("keydown", e => {
+    // Arrow keys for navigation
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+
+        const direction = e.key === 'ArrowUp' ? 1 : -1;
+        const targetY = Math.round(y / vh) * vh + (direction * vh);
+
+        // Smooth scroll to target
+        const startY = y;
+        const distance = targetY - startY;
+        const duration = 400; // ms
+        const startTime = performance.now();
+
+        function smoothScroll(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+
+            y = startY + (distance * eased);
+            velocity = 0; // Stop momentum during keyboard nav
+            positionSections();
+
+            if (progress < 1) {
+                requestAnimationFrame(smoothScroll);
+            } else {
+                // Focus the current panel after navigation
+                const currentIndex = getCurrentSectionIndex();
+                const currentSection = sections[currentIndex];
+                const panelWrap = currentSection.querySelector('.panel-wrap');
+                if (panelWrap) {
+                    panelWrap.focus();
+                }
+            }
+        }
+
+        requestAnimationFrame(smoothScroll);
+    }
+});
 
 /* --------------------------------------------------------- MOMENTUM LOOP --------------------------------------------------------- */
 function animate() {
