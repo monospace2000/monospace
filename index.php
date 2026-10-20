@@ -26,7 +26,7 @@
 /* Base styles */
 html, body {
     margin: 0;
-    font-family: monospace;
+    font-family: "Courier New", monospace;
     font-size: 1.2em;
     color: white;
     height: 100vh;
@@ -153,7 +153,7 @@ body::before {
 /* Skip link for accessibility */
 .skip-link {
     position: absolute;
-    top: -42px;
+    top: -48px;
     left: 0;
     background: #000;
     color: white;
@@ -206,7 +206,9 @@ body::before {
     }
 
     .panel-wrap {
-        width: 90%;
+        width: 90% !important;
+        pointer-events: auto;
+        cursor: pointer;
     }
 
 
@@ -250,13 +252,33 @@ body::before {
 }
 
 
+.static-link{
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 100;
+}
+.static-link a{
+    color: white;
+    text-decoration: none;
+}
 
+@media (max-width: 600px) {
+.static-link a{
+    font-size: 14px;
+}
+}
 
 </style>
 </head>
 <body>
 
+
 <a href="#welcome" class="skip-link">Skip to main content</a>
+
+<div class="static-link" id="contact-link">
+    <a href="https://monospace.com/hens/contact/">contact</a>
+</div>
 
 <div class="spotlight" aria-hidden="true">
     <div class="item" id="spotlight-base"></div>
@@ -366,7 +388,7 @@ body::before {
         </div>
     </div>
 </div>
-<!-- <div class="section">
+<div class="section">
     <div class="panel-wrap" id="music" data-spotlight="music" tabindex="0" role="article" aria-label="monospace MUSIC - Original recordings">
         <div class="panel">
             <div class="panel-top"></div>
@@ -376,7 +398,7 @@ body::before {
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <div class="section">
     <div class="panel-wrap" id="portfolio" data-spotlight="portfolio" tabindex="0" role="article" aria-label="PORTFOLIO - Professional work and resume">
         <div class="panel">
@@ -391,7 +413,7 @@ body::before {
 </main>
 
 <footer id="copyright" role="contentinfo">
-    Copyright &copy; 1998&mdash;2025 monospace. You are visitor number one.
+    Copyright &copy; 1998&mdash;2026 monospace.com. You are visitor number one.
 </footer>
 
 <script>
@@ -403,12 +425,12 @@ const sectionsObject = {
     wayback: { isActive: false, spotlightImage: 'assets/images/spotlight/cabinet.png', panel: document.getElementById('wayback'), url: 'wayback' },
     sightings: { isActive: false, spotlightImage: 'assets/images/spotlight/sightings.png', panel: document.getElementById('sightings'), url: 'https://sightings.monospace.com' },
     food: { isActive: false, spotlightImage: 'assets/images/spotlight/tocque.png', panel: document.getElementById('food'), url: 'https://food.monospace.com' },
-    interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/portfolio/wordpress/portfolio/publishers-clearing-house/monthly-facebook-mini-games/' },
+    interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/publishers-clearing-house/monthly-facebook-mini-games/' },
     console: { isActive: false, spotlightImage: 'assets/images/spotlight/console.png', panel: document.getElementById('console'), url: 'console' },
     digits: { isActive: false, spotlightImage: 'assets/images/spotlight/digits.png', panel: document.getElementById('digits'), url: 'https://www.digitalsexlife.com' },
     color: { isActive: false, spotlightImage: 'assets/images/spotlight/color.png', panel: document.getElementById('color'), url: 'https://color.monospace.com' },
     music: { isActive: false, spotlightImage: 'assets/images/spotlight/drum.png', panel: document.getElementById('music'), url: 'https://music.monospace.com' },
-    portfolio: { isActive: false, spotlightImage: 'assets/images/spotlight/briefcase.png', panel: document.getElementById('portfolio'), url: 'hens/portfolio' }
+    portfolio: { isActive: false, spotlightImage: 'assets/images/spotlight/briefcase.png', panel: document.getElementById('portfolio'), url: 'hens' }
 };
 
 // preload images
@@ -448,7 +470,21 @@ window.setActiveSection = setActiveSection;
 // Make panels clickable and keyboard accessible
 Object.values(sectionsObject).forEach(section => {
     if (section.url) {
-        // Click handler
+        // Touch: navigate on touchend to avoid iOS bfcache synthetic-click failures
+        let tapStartX = 0, tapStartY = 0;
+        section.panel.addEventListener('touchstart', e => {
+            tapStartX = e.touches[0].clientX;
+            tapStartY = e.touches[0].clientY;
+        }, { passive: true });
+        section.panel.addEventListener('touchend', e => {
+            const t = e.changedTouches[0];
+            if (Math.abs(t.clientX - tapStartX) < 10 && Math.abs(t.clientY - tapStartY) < 10) {
+                e.preventDefault(); // suppress synthetic click so we don't navigate twice
+                window.location.href = section.url;
+            }
+        });
+
+        // Click handler (mouse / non-touch)
         section.panel.addEventListener('click', () => {
             window.location.href = section.url;
         });
@@ -460,6 +496,16 @@ Object.values(sectionsObject).forEach(section => {
                 window.location.href = section.url;
             }
         });
+    }
+});
+
+// Reset drag/velocity state when page is restored from bfcache (iOS back navigation)
+window.addEventListener('pageshow', e => {
+    if (e.persisted) {
+        dragging = false;
+        velocity = 0;
+        y = Math.round(y / vh) * vh;
+        positionSections();
     }
 });
 
@@ -522,11 +568,44 @@ function updateSpotlight() {
 /* --------------------------------------------------------- POSITIONING --------------------------------------------------------- */
 function positionSections() {
     const total = count * vh;
+    const isMobile = window.innerWidth <= 500;
+
     sections.forEach((s, i) => {
         let pos = i * vh + y;
         while (pos < -vh) pos += total;
         while (pos > total - vh) pos -= total;
         s.style.top = pos + "px";
+
+        // On mobile: fade panels at viewport edges
+        if (isMobile) {
+            const viewportHeight = window.innerHeight;
+            const fadeZone = 100; // Fade distance in pixels
+
+            // The section's top position is 'pos'
+            // The section is 100vh tall, panel is at bottom (flex-end + padding-bottom: 10vh)
+            // So the actual visible panel region is roughly from pos+70vh to pos+90vh
+            // We want to fade based on where this panel region intersects viewport edges
+
+            const panelTop = pos + (0.7 * viewportHeight);    // Top of panel area
+            const panelBottom = pos + (0.9 * viewportHeight); // Bottom of panel area
+
+            let opacity = 1;
+
+            // Fade when panel top goes above viewport top
+            if (panelTop < fadeZone) {
+                opacity = Math.min(opacity, Math.max(0, panelTop / fadeZone));
+            }
+
+            // Fade when panel bottom goes below viewport bottom
+            if (panelBottom > viewportHeight - fadeZone) {
+                const distFromBottom = viewportHeight - panelBottom;
+                opacity = Math.min(opacity, Math.max(0, 1 + (distFromBottom / fadeZone)));
+            }
+
+            s.style.opacity = opacity;
+        } else {
+            s.style.opacity = 1;
+        }
     });
     updateSpotlight();
 }

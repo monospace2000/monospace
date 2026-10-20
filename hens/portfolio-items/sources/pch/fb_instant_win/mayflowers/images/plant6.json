@@ -1,0 +1,99 @@
+﻿{"frames": [
+
+{
+	"filename": "plant60000",
+	"frame": {"x":0,"y":0,"w":137,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":204,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60001",
+	"frame": {"x":137,"y":0,"w":137,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":193,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60002",
+	"frame": {"x":274,"y":0,"w":137,"h":66},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":183,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60003",
+	"frame": {"x":0,"y":66,"w":137,"h":94},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":155,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60004",
+	"frame": {"x":137,"y":66,"w":137,"h":113},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":136,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60005",
+	"frame": {"x":274,"y":66,"w":149,"h":148},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":101,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60006",
+	"frame": {"x":0,"y":214,"w":157,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":65,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60007",
+	"frame": {"x":157,"y":214,"w":156,"h":209},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":40,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60008",
+	"frame": {"x":313,"y":214,"w":170,"h":222},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":27,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60009",
+	"frame": {"x":0,"y":436,"w":172,"h":236},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":13,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}
+,{
+	"filename": "plant60010",
+	"frame": {"x":172,"y":436,"w":179,"h":249},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":179,"h":249},
+	"sourceSize": {"w":179,"h":249}
+}],
+"meta": {
+	"app": "Adobe Animate",
+	"version": "18.0.1.115",
+	"image": "plant6.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":1024},
+	"scale": "1"
+}
+}
