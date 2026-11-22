@@ -1,8 +1,40 @@
+<?php
+// The panels and their look come from home-config.json, published by the control screen (/control/); no file = the starting
+// panels in control/defaults.php, exactly the page as it was. In preview (?ms_preview=1) the control screen can POST a draft.
+$homeDefaults = require __DIR__ . '/control/defaults.php';
+$homeConfig = json_decode((string) @file_get_contents(__DIR__ . '/home-config.json'), true);
+if (!is_array($homeConfig)) $homeConfig = [];
+$isPreview = isset($_GET['ms_preview']);
+// The page changes whenever the control screen applies something: never let the CDN or a browser keep an old copy (2026-10-28: the host's CDN served a stale home page)
+header($isPreview ? 'Cache-Control: no-store' : 'Cache-Control: no-cache, must-revalidate, max-age=0');
+$draft = null;
+if ($isPreview && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['draft'])) {
+    define('MS_CONTROL', 1);
+    require __DIR__ . '/control/lib.php';
+    $draft = json_decode((string) $_POST['draft'], true);
+    if (is_array($draft)) {
+        $homeConfig['panels'] = ms_panels_settings($draft['panels'] ?? []);
+        $homeConfig['panels_css'] = ms_panels_css($homeConfig['panels']);
+        $homeConfig['site'] = ms_site_settings($draft['site'] ?? []);
+        $homeConfig['logo_css'] = ms_logo_css($homeConfig['site']);
+        $homeConfig['oval_css'] = ms_oval_css($homeConfig['site']);
+        $homeConfig['contact_css'] = ms_contact_css($homeConfig['site']);
+        $homeConfig['tagline_css'] = ms_tagline_css($homeConfig['site']);
+    }
+}
+$homePanels = array_values(array_filter(is_array($homeConfig['panels'] ?? null) ? $homeConfig['panels'] : $homeDefaults['panels'], fn($p) => !isset($p['show']) || $p['show']));
+if (!$homePanels) $homePanels = $homeDefaults['panels'];
+$focusIndex = 0;
+foreach ($homePanels as $i => $p) if (isset($draft['focus']) && $p['id'] === $draft['focus']) $focusIndex = $i;
+$e = fn($v) => htmlspecialchars((string) $v, ENT_QUOTES, 'UTF-8');
+$homeSite = ($homeConfig['site'] ?? []) + $homeDefaults['site'];
+$safeUrl = fn($u) => preg_match('~^\s*(javascript|data|vbscript):~i', (string) $u) ? '' : (string) $u;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>monospace</title>
 <meta name="description" content="monospace" />
 <meta property="og:title" content="monospace" />
@@ -20,7 +52,7 @@
 <meta name="twitter:image" content="https://www.monospace.com/assets/images/site_image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <style>
 /* Base styles */
@@ -30,48 +62,91 @@ html, body {
     font-size: 1.2em;
     color: white;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
+    overscroll-behavior: none;
+    scrollbar-width: none;
     background-color: #000;
+}
+/* The page never scrolls (the panels are moved by script): lock it, so rotating a phone cannot bring up scrollbars */
+html { position: fixed; inset: 0; width: 100%; overflow: clip; }
+/* A finger only moves the panels up and down: no sideways drag of the page on a phone (pinch-zoom stays) */
+html, body { touch-action: pan-y pinch-zoom; overscroll-behavior: none; max-width: 100%; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+/* The page's light: --spot-pool is the glow behind the logo. The control screen (/control/)
+   replaces it, and adds the beam (body::after), through the CSS in home-config.json - printed after this block. */
+:root {
+    --spot-pool: radial-gradient(ellipse 60% 40% at 20% 0vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 55vw);
+    /* The panels' look - the control screen replaces these through the CSS in home-config.json */
+    --panel-w: clamp(250px, 30vw, 400px);
+    --panel-radius: 16px;
+    --panel-blur: 5px;
+    --panel-tint: rgba(0,0,0,0.3);
+    --panel-border-a: 0.3;
+    --panel-shine: 1;
+    --panel-glow-a: 0.5;
+    --panel-title-size: 24px;
+    --panel-text-size: 18px;
+    --panel-color: white;
+}
+body {
+    position: relative;
+    z-index: 0; /* its own stacking context, so the light (z-index -2) sits above the black but below the panels */
 }
 body::before {
     content: '';
     position: fixed;
     inset: 0;
-    z-index: 0;
-    background: url('/assets/images/logo_xl_transp.png') 10% 10vh no-repeat,
-                radial-gradient(ellipse 60% 40% at 20% 0vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 55vw),
-                #000;
-    background-size: 55%, 100%, 100%;
+    z-index: -2;
+    background-image: url('/assets/images/logo_xl_transp.png'), var(--spot-pool);
+    background-position: 10% 10vh, 0 0;
+    background-repeat: no-repeat;
+    background-color: #000;
+    background-size: 55%, 100%;
 }
 
 .section {
     position: absolute;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: flex-start; /* moved left of center */
     align-items: center;
     padding-left: 10vw; /* left offset */
 }
 
+/* The tagline: hidden until the control screen's CSS (#ms-tagline) places and shows it */
+#tagline { display: none; }
+
+/* The logo as its own layer - only used when the control screen moves it out of the light's layer (z-index) */
+.logo-layer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: url('/assets/images/logo_xl_transp.png') 10% 10vh / 55% no-repeat;
+}
+@media (max-width: 500px) { .logo-layer { background-position: center 5vh; background-size: 90%; } }
+
 /* panel panels */
 .panel-wrap {
     width: 30vw;
-    border-radius: 16px;
+    border-radius: var(--panel-radius);
 }
 .panel {
     box-shadow: 10px 10px 10px rgba(0,0,0,0.3),
                 -10px 10px 10px rgba(0,0,0,0.3),
                 inset 5px 5px 10px rgba(0,0,0,0.2),
                 inset -5px -5px 10px rgba(0,0,0,0.2);
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0) 40px, rgba(255,255,255,0) 90%),
-                linear-gradient(to top, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0) 20px, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0) 100%),
-                rgba(0,0,0,0.3);
-    border-radius: 16px;
-    border: solid 1px rgba(255,255,255,0.3);
-    color: white;
+    background: linear-gradient(to bottom, rgba(255,255,255,calc(0.3 * var(--panel-shine))) 0px, rgba(255,255,255,0) 40px, rgba(255,255,255,0) 90%),
+                linear-gradient(to top, rgba(255,255,255,calc(0.3 * var(--panel-shine))) 0px, rgba(255,255,255,0) 20px, rgba(255,255,255,calc(0.1 * var(--panel-shine))) 40%, rgba(255,255,255,0) 100%),
+                var(--panel-tint);
+    border-radius: var(--panel-radius);
+    border: solid 1px rgba(255,255,255,var(--panel-border-a));
+    color: var(--panel-color);
     cursor: pointer;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(var(--panel-blur));
 }
 .panel-clear{
     box-shadow: none;
@@ -84,18 +159,18 @@ body::before {
 .panel-top {
     height: 20px;
     margin: 4px 4px 0 4px;
-    background: linear-gradient(rgba(255,255,255,0.5) 0px, rgba(255,255,255,0) 20px);
+    background: linear-gradient(rgba(255,255,255,calc(0.5 * var(--panel-shine))) 0px, rgba(255,255,255,0) 20px);
     border-radius: 10px 10px 0 0;
 }
 .panel-header {
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(20px, 24px, 28px);
+    font-size: var(--panel-title-size);
     font-weight: 500;
     margin: -16px 20px 0px 20px;
 }
 .panel-content {
     font-family: 'Roboto', sans-serif;
-    font-size: clamp(16px, 18px, 20px);
+    font-size: var(--panel-text-size);
     line-height: 1.4;
     font-weight: 300;
     margin: 10px 20px 20px;
@@ -120,6 +195,18 @@ body::before {
     background-repeat: no-repeat;
     background-position: bottom;
 }
+/* A white oval that stays behind the image while only the figure fades (the control screen turns it on; sizes in frame percentages: the frame is 320 x 720) */
+.spotlight-oval {
+    display: none;
+    --oval-grow: 2;
+    position: absolute;
+    left: calc(var(--oval-grow) * -100% / 320);
+    right: calc(var(--oval-grow) * -100% / 320);
+    bottom: calc(var(--oval-grow) * -100% / 720);
+    height: calc((120 + 2 * var(--oval-grow)) * 100% / 720);
+    border-radius: 50%;
+    background: #fff;
+}
 #spotlight-base{
     background-image: url(assets/images/spotlight/base.png);
     display: none;
@@ -136,19 +223,17 @@ body::before {
 }
 
 /* Keyboard focus styles */
-
-/* .panel-wrap:focus {
-    outline: 3px solid rgba(255, 255, 255, 0.2);
+.panel-wrap:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.8);
     outline-offset: 4px;
 }
-.panel-wrap:focus .panel {
+.panel-wrap:focus-visible .panel:not(.panel-clear) {
     box-shadow: 0 0 20px 8px rgba(255,255,255,0.6),
                 10px 10px 10px rgba(0,0,0,0.3),
                 -10px 10px 10px rgba(0,0,0,0.3),
                 inset 5px 5px 10px rgba(0,0,0,0.2),
                 inset -5px -5px 10px rgba(0,0,0,0.2);
 }
- */
 
 /* Skip link for accessibility */
 .skip-link {
@@ -163,35 +248,36 @@ body::before {
     border: 2px solid white;
 }
 
-/* .skip-link:focus {
+.skip-link:focus {
     top: 0;
 }
- */
+
 .arrow-up, .arrow-down{
     text-align: left;
 
 }
 @media (hover: hover) and (pointer: fine) {
     /* Base panel-wrap: smooth transition, no glow */
-    .panel-wrap:not(#welcome) {
+    .panel-wrap:not(.is-clear) {
         transition: box-shadow 0.2s ease-in-out;
         box-shadow: 0 0 0 0 rgba(255,255,255,0); /* no glow initially */
     }
 
     /* Hover: subtle outer glow */
-    .panel-wrap:not(#welcome):hover {
-        box-shadow: 0 0 12px 4px rgba(255,255,255,0.5);
+    .panel-wrap:not(.is-clear):hover {
+        box-shadow: 0 0 12px 4px rgba(255,255,255,var(--panel-glow-a));
     }
 }
 
 
 /* Mobile responsive */
 @media (max-width: 500px) {
+    :root {
+        --spot-pool: radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 60vw);
+    }
     body::before {
-        background: url('/assets/images/logo_xl_transp.png') center 5vh no-repeat,
-                    radial-gradient(circle at 50% 33vh, rgba(0,0,255,0.75) 0%, rgba(0,0,255,0) 60vw),
-                    #000;
-        background-size: 90%, 100%, 100%;
+        background-position: center 5vh, 0 0;
+        background-size: 90%, 100%;
     }
 }
 @media (max-width: 500px) {
@@ -231,23 +317,27 @@ body::before {
 }
 
 
+/* A phone on its side (short and wide): the panel sits low, the logo and the spotlight image are sized by the screen's height, the small print is smaller */
+@media (max-height: 500px) and (orientation: landscape) {
+    body::before { background-position: 6% 8vh, 0 0; background-size: 42%, 100%; }
+    .logo-layer { background-position: 6% 8vh; background-size: 42%; }
+    .section { box-sizing: border-box; align-items: flex-end; padding-left: 6vw; padding-bottom: 10vh; }
+    .spotlight { right: 10%; bottom: 6vh; }
+    .panel-clear { padding-bottom: 0 !important; }
+    .clear-text { font-size: var(--panel-text-size); }
+    #copyright { font-size: 10px; bottom: 4px; }
+    .static-link { top: 6px; right: 12px; }
+}
+
 /* rotation tweaks for mobile */
 /* Ensure panels always fit nicely */
 .panel-wrap {
-    width: clamp(250px, 30vw, 400px); /* min 250px, max 400px, responsive in-between */
+    width: var(--panel-w); /* default: min 250px, max 400px, responsive in-between */
 }
 
-/* Adjust panel content for readability on all sizes */
-.panel-header {
-    _font-size: clamp(16px, 24px, 28px);
-}
-.panel-content {
-    _font-size: clamp(12px, 16px, 18px);
-}
-
-/* Spotlight size remains responsive */
+/* Spotlight size remains responsive - and never taller than the screen (the image is 320 x 720) */
 .spotlight {
-    width: clamp(150px, 20vw, 250px);
+    width: min(clamp(150px, 20vw, 250px), 34vh);
     aspect-ratio: 320/720;
 }
 
@@ -270,171 +360,89 @@ body::before {
 }
 
 </style>
+<?php
+// Published by the control screen (/control/); absent = the page as it always was
+$cssSpot = $draft['spot'] ?? ($homeConfig['spotlight_css'] ?? '');
+$cssLook = $draft['look'] ?? ($homeConfig['look_css'] ?? '');
+echo '<style id="ms-spotlight">' . str_replace('<', '', (string) $cssSpot) . "</style>\n";
+echo '<style id="ms-look">' . str_replace('<', '', (string) $cssLook) . "</style>\n";
+echo '<style id="ms-oval">' . str_replace('<', '', (string) ($homeConfig['oval_css'] ?? '')) . "</style>\n";
+echo '<style id="ms-contact">' . str_replace('<', '', (string) ($homeConfig['contact_css'] ?? '')) . "</style>\n";
+echo '<style id="ms-tagline">' . str_replace('<', '', (string) ($homeConfig['tagline_css'] ?? '')) . "</style>\n";
+echo '<style id="ms-logo">' . str_replace('<', '', (string) ($homeConfig['logo_css'] ?? '')) . "</style>\n";
+echo '<style id="ms-panels">' . str_replace('<', '', (string) ($homeConfig['panels_css'] ?? '')) . "</style>\n";
+?>
 </head>
 <body>
 
 
-<a href="#welcome" class="skip-link">Skip to main content</a>
+<div class="logo-layer" id="logo-layer" aria-hidden="true"></div>
 
+<?php if (!empty($homeSite['tagline_show']) && trim((string) ($homeSite['tagline_text'] ?? '')) !== ''): ?>
+<p id="tagline"><?= $e($homeSite['tagline_text']) ?></p>
+<?php endif; ?>
+
+<a href="#<?= $e($homePanels[0]["id"]) ?>" class="skip-link">Skip to main content</a>
+
+<?php if (!empty($homeSite['contact_show'])): ?>
 <div class="static-link" id="contact-link">
-    <a href="https://monospace.com/hens/contact/">contact</a>
+    <a href="<?= $e($safeUrl($homeSite['contact_url'])) ?>"><?= $e($homeSite['contact_text']) ?></a>
 </div>
+<?php endif; ?>
 
 <div class="spotlight" aria-hidden="true">
+    <div class="spotlight-oval" id="spotlight-oval"></div>
     <div class="item" id="spotlight-base"></div>
     <div class="item" id="spotlight-item"></div>
 </div>
 
 <main role="main" aria-label="Portfolio sections">
+<?php foreach ($homePanels as $p):
+    $label = $p['label'] ?? '' ?: ($p['title'] ?? '');
+    $text = nl2br($e($p['text'] ?? '')); ?>
 <div class="section">
-    <div class="panel-wrap" id="welcome" data-spotlight="welcome" tabindex="0" role="article" aria-label="Welcome section">
+    <div class="panel-wrap<?= !empty($p['clear']) ? ' is-clear' : '' ?>" id="<?= $e($p['id']) ?>" data-spotlight="<?= $e($p['id']) ?>" tabindex="0" role="article" aria-label="<?= $e($label) ?>">
+<?php if (!empty($p['clear'])): ?>
         <div class="panel panel-clear">
-            <div class="_panel-top"></div>
-            <div class="_panel-header"><!--header--></div>
             <div class="arrow-up"></div>
-            <div class="_panel-content" style="padding:12px;">
-                Welcome!
-                <br><br>Scroll, swipe, or use arrow keys to navigate this page. Each section shows a different aspect of my work. Click or press Enter on a panel to explore further.
-            </div>
+            <div class="clear-text" style="padding:12px;"><?= $text ?></div>
             <div class="arrow-down"></div>
         </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="art" data-spotlight="art" tabindex="0" role="article" aria-label="monospace ART - Painting and sketches">
+<?php else: ?>
         <div class="panel">
             <div class="panel-top"></div>
-            <div class="panel-header">monospace ART</div>
+            <div class="panel-header"><?= $e($p['title']) ?></div>
             <div class="panel-content">
-                Painting and sketches exploring mood, light, and structure through landscapes, cityscapes, and nature studies. All works are available for purchase. Commissions welcome.
+                <?= $text ?>
             </div>
         </div>
+<?php endif; ?>
     </div>
 </div>
-<div class="section">
-    <div class="panel-wrap" id="sightings" data-spotlight="sightings" tabindex="0" role="article" aria-label="Sightings of the Strangely Familiar - Digital sketches">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">Sightings of the Strangely Familiar</div>
-            <div class="panel-content">
-                A series of original digital sketches made with Procreate, captioned by Mindy.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="food" data-spotlight="food" tabindex="0" role="article" aria-label="Food photography">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">monospace FOOD</div>
-            <div class="panel-content">
-                A visual exploration of meals I've cooked, enjoyed, and photographed. A documentation of flavors, presentations, and culinary moments, shared to inspire and celebrate the experience of food.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="interactive" data-spotlight="interactive" tabindex="0" role="article" aria-label="monospace INTERACTIVE - Web-based games and multimedia">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">monospace INTERACTIVE</div>
-            <div class="panel-content">
-                I have decades of hands-on experience designning and coding interactive experiences that are both engaging and memorable, from web-based mini-games to immersive multimedia projects.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="console" data-spotlight="console" tabindex="0" role="article" aria-label="THE MONOSPACE CONSOLE - 1998 Shockwave project">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">THE MONOSPACE CONSOLE</div>
-            <div class="panel-content">
-                The original monospace console, which started this website. A Shockwave art project from 1998, revived in modern Javascript. A chatty command-line console you can click, type, and poke at.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="wayback" data-spotlight="wayback" tabindex="0" role="article" aria-label="2001 TIME CAPSULE - Historical website snapshot">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">2001 TIME CAPSULE</div>
-            <div class="panel-content">
-                This website has been around since 1998. It's changed many times since then, but it was always state of the art. Here is a snapshot of what it looked like in July of 2001, as found on the Wayback Machine.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="digits" data-spotlight="digits" tabindex="0" role="article" aria-label="DIGITAL SEX LIFE - 1992 interactive artwork">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">DIGITAL SEX LIFE</div>
-            <div class="panel-content">
-                An early interactive artwork from 1991-1992 where numbers become digital agents, moving, bonding, aging, and reproducing. Newly reimagined and rewritten.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="color" data-spotlight="color" tabindex="0" role="article" aria-label="monospace COLOR - Restored vintage photographs">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">monospace COLOR</div>
-            <div class="panel-content">
-                I like to restore and colorize vintage black-and-white photographs by hand in Photoshop, paying close attention to historical accuracy and visual detail. Your "AI" can't do that.
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="music" data-spotlight="music" tabindex="0" role="article" aria-label="monospace MUSIC - Original recordings">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">monospace MUSIC</div>
-            <div class="panel-content">
-                I play drums and guitar, and I write original music. Here you can find some of my recordings, live videos, and songs. (SOON)
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="panel-wrap" id="portfolio" data-spotlight="portfolio" tabindex="0" role="article" aria-label="PORTFOLIO - Professional work and resume">
-        <div class="panel">
-            <div class="panel-top"></div>
-            <div class="panel-header">PORTFOLIO</div>
-            <div class="panel-content">
-                A curated selection of my professional work. Browse my resume, portfolio, and key projects across art, interactive media, and more.
-            </div>
-        </div>
-    </div>
-</div>
+<?php endforeach; ?>
 </main>
 
 <footer id="copyright" role="contentinfo">
-    Copyright &copy; 1998&mdash;2026 monospace.com. You are visitor number one.
+    <?= $e($homeSite['footer']) ?>
 </footer>
 
 <script>
 // Sections spotlight setup
 const spotlight = document.getElementById('spotlight-item');
-const sectionsObject = {
-    welcome: { isActive: false, spotlightImage: 'assets/images/spotlight/hand.png', panel: document.getElementById('welcome'), url: null },
-    art: { isActive: false, spotlightImage: 'assets/images/spotlight/easel.png', panel: document.getElementById('art'), url: 'https://art.monospace.com' },
-    wayback: { isActive: false, spotlightImage: 'assets/images/spotlight/cabinet.png', panel: document.getElementById('wayback'), url: 'wayback' },
-    sightings: { isActive: false, spotlightImage: 'assets/images/spotlight/sightings.png', panel: document.getElementById('sightings'), url: 'https://sightings.monospace.com' },
-    food: { isActive: false, spotlightImage: 'assets/images/spotlight/tocque.png', panel: document.getElementById('food'), url: 'https://food.monospace.com' },
-    interactive: { isActive: false, spotlightImage: 'assets/images/spotlight/controller.png', panel: document.getElementById('interactive'), url: 'https://monospace.com/hens/publishers-clearing-house/monthly-facebook-mini-games/' },
-    console: { isActive: false, spotlightImage: 'assets/images/spotlight/console.png', panel: document.getElementById('console'), url: 'console' },
-    digits: { isActive: false, spotlightImage: 'assets/images/spotlight/digits.png', panel: document.getElementById('digits'), url: 'https://www.digitalsexlife.com' },
-    color: { isActive: false, spotlightImage: 'assets/images/spotlight/color.png', panel: document.getElementById('color'), url: 'https://color.monospace.com' },
-    music: { isActive: false, spotlightImage: 'assets/images/spotlight/drum.png', panel: document.getElementById('music'), url: 'https://music.monospace.com' },
-    portfolio: { isActive: false, spotlightImage: 'assets/images/spotlight/briefcase.png', panel: document.getElementById('portfolio'), url: 'hens' }
-};
+const panelData = <?= json_encode(array_map(fn($p) => ['id' => $p['id'], 'image' => $p['image'] ? $p['image'] . '?v=' . (int) @filemtime(__DIR__ . '/' . $p['image']) : null, 'url' => ($safeUrl($p['url'] ?? '') ?: null)], $homePanels), JSON_UNESCAPED_SLASHES) ?>;
+const PREVIEW = <?= $isPreview ? 'true' : 'false' ?>;
+const sectionsObject = {};
+panelData.forEach(p => {
+    sectionsObject[p.id] = { isActive: false, spotlightImage: p.image, panel: document.getElementById(p.id), url: p.url };
+});
+const firstId = panelData[0].id;
+function setSpotlightImage(src) { spotlight.style.backgroundImage = src ? `url(${src})` : 'none'; }
+// Navigate - not in the control screen's preview, where a click must leave the page alone
+function go(url) { if (!PREVIEW) window.location.href = url; }
 
 // preload images
 Object.values(sectionsObject).forEach(panel => {
+    if (!panel.spotlightImage) return;
     const img = new Image();
     img.src = panel.spotlightImage;
 });
@@ -452,15 +460,9 @@ function getActiveSection() {
     return null;
 }
 
-function showOnlyActivePanel() {
-    Object.values(sectionsObject).forEach(section => {
-        section.panel.style.display = section.isActive ? 'block' : 'none';
-    });
-}
-
-// Initialize with hand
-setActiveSection('welcome');
-spotlight.style.backgroundImage = `url(${sectionsObject['welcome'].spotlightImage})`;
+// Initialize with the first panel's image
+setActiveSection(firstId);
+setSpotlightImage(sectionsObject[firstId].spotlightImage);
 
 // Expose for other scripts
 window.getActiveSection = getActiveSection;
@@ -480,20 +482,21 @@ Object.values(sectionsObject).forEach(section => {
             const t = e.changedTouches[0];
             if (Math.abs(t.clientX - tapStartX) < 10 && Math.abs(t.clientY - tapStartY) < 10) {
                 e.preventDefault(); // suppress synthetic click so we don't navigate twice
-                window.location.href = section.url;
+                go(section.url);
             }
         });
 
         // Click handler (mouse / non-touch)
         section.panel.addEventListener('click', () => {
-            window.location.href = section.url;
+            if (dragDistance > 5) return; // the mouse was dragging, not clicking
+            go(section.url);
         });
 
         // Enter/Space key handler
         section.panel.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                window.location.href = section.url;
+                go(section.url);
             }
         });
     }
@@ -516,15 +519,30 @@ window.addEventListener('pageshow', e => {
 /* --------------------------------------------------------- BASIC SETUP --------------------------------------------------------- */
 const sections = Array.from(document.querySelectorAll('.section'));
 const count = sections.length;
-let vh = window.innerHeight*0.75;
-let y = 0;
+// How far apart the panels are: 3/4 of the screen's height - a short, wide screen (a phone on its side) gets more, so the next panel does not show
+const shortLandscape = () => window.matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
+const step = () => window.innerHeight * (shortLandscape() ? 0.92 : 0.75);
+let vh = step();
+let y = -(<?= (int) $focusIndex ?>) * vh; // the control screen's preview opens at the panel being edited
 let dragging = false;
 let lastY = 0;
 let lastTime = 0;
 let velocity = 0;
+let dragDistance = 0;
 const friction = 0.92;
 
-window.addEventListener("resize", () => { vh = window.innerHeight*0.75; positionSections(); });
+// Rotating the phone changes the step: keep the same place between the panels, drop any momentum, and re-measure once the browser has settled
+function refit() {
+    const place = -y / vh;
+    vh = step();
+    y = -place * vh;
+    velocity = 0;
+    dragging = false;
+    positionSections();
+    window.scrollTo(0, 0);
+}
+window.addEventListener("resize", refit);
+window.addEventListener("orientationchange", () => { refit(); setTimeout(refit, 250); });
 
 let lastOpacity = 1;
 
@@ -559,7 +577,7 @@ function updateSpotlight() {
     let sectionId = sections[idx].querySelector('.panel-wrap').dataset.spotlight;
 
     if (!sectionsObject[sectionId].isActive) {
-        spotlight.style.backgroundImage = `url(${sectionsObject[sectionId].spotlightImage})`;
+        setSpotlightImage(sectionsObject[sectionId].spotlightImage);
         setActiveSection(sectionId);
     }
 }
@@ -614,13 +632,16 @@ function positionSections() {
 function startDrag(e) {
     dragging = true;
     velocity = 0;
+    dragDistance = 0;
     lastY = e.touches ? e.touches[0].clientY : e.clientY;
     lastTime = performance.now();
 }
 function moveDrag(e) {
     if (!dragging) return;
+    if (e.touches && e.touches.length > 1) { dragging = false; return; } // pinch-zoom, not a scroll
     const nowY = e.touches ? e.touches[0].clientY : e.clientY;
     const dy = nowY - lastY;
+    dragDistance += Math.abs(dy);
     y += dy;
     const now = performance.now();
     const dt = now - lastTime || 16;
@@ -674,7 +695,7 @@ document.addEventListener("keydown", e => {
                 const currentSection = sections[currentIndex];
                 const panelWrap = currentSection.querySelector('.panel-wrap');
                 if (panelWrap) {
-                    panelWrap.focus();
+                    panelWrap.focus({ preventScroll: true });
                 }
             }
         }
@@ -706,21 +727,20 @@ document.addEventListener("touchmove", moveDrag, { passive:false });
 document.addEventListener("touchend", endDrag);
 document.addEventListener("touchcancel", endDrag);
 
+<?php if ($isPreview): ?>
+/* Live preview inside the control screen (/control/, same site): it posts the CSS, the page shows it at once */
+window.addEventListener('message', e => {
+    if (e.origin !== location.origin || !e.data || e.data.type !== 'ms-css') return;
+    for (const [id, css] of [['ms-spotlight', e.data.spot], ['ms-look', e.data.look]]) {
+        if (typeof css === 'string') document.getElementById(id).textContent = css;
+    }
+});
+if (window.parent !== window) window.parent.postMessage({ type: 'ms-ready' }, location.origin);
+<?php endif; ?>
+
 /* Initial paint */
 positionSections();
 
-
-
-// Handle window resize gracefully
-function handleResize() {
-    vh = window.innerHeight; // update viewport height
-    positionSections();       // reposition sections
-}
-let resizeTimeout;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(handleResize, 100);
-});
 
 
 </script>
