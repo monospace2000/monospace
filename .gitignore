@@ -21,7 +21,8 @@ home-config.json
 
 # Server-side, not in git (KB sites/monospace-com/overview.md); the nightly mirror brings them to the Mac since 2026-11-12:
 # the /hens WordPress install, the PCH portfolio sources and their game-assets link, the portfolio archive.
-# (Files under hens/portfolio-items/sources/ that were tracked before these rules stay tracked.)
+# The 102 PCH source files that used to be tracked were untracked on 2026-11-22 (still on disk and on the server;
+# still in this repository's history).
 /hens/wp-*.php
 /hens/xmlrpc.php
 /hens/readme.html
