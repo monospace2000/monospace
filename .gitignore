@@ -7,3 +7,37 @@ wp-content/debug.log
 
 # macOS
 .DS_Store
+home-config.json
+
+# mirrored from the live server (never edited here): WordPress core, secrets, uploads
+/hens/wp-admin/
+/hens/wp-includes/
+/hens/wp-content/uploads/
+/hens/wp-config.php
+/sftp_old.json
+
+# Local editor settings - an old SFTP file with a password lives here; never in git (this repository is PUBLIC)
+.vscode/
+
+# Server-side, not in git (KB sites/monospace-com/overview.md); the nightly mirror brings them to the Mac since 2026-11-12:
+# the /hens WordPress install, the PCH portfolio sources and their game-assets link, the portfolio archive.
+# (Files under hens/portfolio-items/sources/ that were tracked before these rules stay tracked.)
+/hens/wp-*.php
+/hens/xmlrpc.php
+/hens/readme.html
+/hens/license.txt
+/hens/.htaccess
+/hens/wp-content/
+/hens/portfolio-items/sources/
+/hens/portfolio.zip
+/app_iw_game_assets
+*.zip
+
+# Served by the site but kept out of this public repository: client work and the resume
+/clients/
+/hens/resume-js/
+
+# Host files and scratch tests on the server
+/.well-known/
+/test.html
+/hens/test.php
