@@ -16,7 +16,8 @@ home-config.json
 /hens/wp-config.php
 /sftp_old.json
 
-# Local editor settings - an old SFTP file with a password lives here; never in git (this repository is PUBLIC)
+# Local editor settings - an old SFTP settings file (server, port, user name, key path; no password) lives here;
+# never in git (this repository is PUBLIC)
 .vscode/
 
 # Server-side, not in git (KB sites/monospace-com/overview.md); the nightly mirror brings them to the Mac since 2026-11-12:
