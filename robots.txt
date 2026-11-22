@@ -1,6 +1,2 @@
 User-agent: *
 Crawl-delay: 10
-
-# Meta AI model training
-User-agent: Meta-ExternalAgent
-Disallow: /
