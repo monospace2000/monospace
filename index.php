@@ -35,21 +35,7 @@ $safeUrl = fn($u) => preg_match('~^\s*(javascript|data|vbscript):~i', (string) $
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>monospace</title>
-<meta name="description" content="monospace" />
-<meta property="og:title" content="monospace" />
-<meta property="og:description" content="Music, Art, and Interactive Multimedia since 1998. You are visitor number one." />
-<meta property="og:site_name" content="monospace.com" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://www.monospace.com/" />
-<meta property="og:image" content="https://www.monospace.com/assets/images/site_image.png" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="https://www.monospace.com" />
-<meta name="twitter:creator" content="@monospace" />
-<meta name="twitter:title" content="monospace" />
-<meta name="twitter:description" content="Music, Art, and Interactive Multimedia since 1998. You are visitor number one." />
-<meta name="twitter:image" content="https://www.monospace.com/assets/images/site_image.png" />
+<?php require __DIR__ . '/monospace-seo/static.php'; monospace_seo_static_head( '/' ); ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
